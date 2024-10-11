@@ -4,7 +4,7 @@ from telegram.ext import Application, CommandHandler
 
 
 # Define the start command handler
-async def start(update: Update):
+async def start(update: Update, context):
     await update.message.reply_text("Hello!")
 
 
