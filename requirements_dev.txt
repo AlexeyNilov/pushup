@@ -1,0 +1,7 @@
+pytest
+pydantic
+pre-commit
+mypy
+flake8
+fastlite
+black
