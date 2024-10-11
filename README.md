@@ -1,2 +1,1 @@
-# pushup
-Push-up trainer bot
+# Push-up trainer bot
