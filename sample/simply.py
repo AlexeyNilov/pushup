@@ -1,11 +1,14 @@
-from conf.settings import BOT_TOKEN
+from conf.settings import BOT_TOKEN, AUTHORIZED_USER_ID
 from telegram import Update
 from telegram.ext import Application, CommandHandler
 
 
-# Define the start command handler
 async def start(update: Update, context):
-    await update.message.reply_text("Hello!")
+    # Check if the user ID matches your authorized ID
+    if update.effective_user.id == AUTHORIZED_USER_ID:
+        await update.message.reply_text("Hello! You are authorized.")
+    else:
+        await update.message.reply_text("Sorry, you are not authorized to use this bot.")
 
 
 # Main function to set up the bot
