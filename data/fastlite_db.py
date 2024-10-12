@@ -13,7 +13,7 @@ DB: Database = fl.database(db_path)
 event_structure = dict(
     id=int,
     time=str,
-    user=str,
+    user_id=int,
     value=int,
 )
 

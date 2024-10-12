@@ -6,5 +6,5 @@ from typing import Any, Union, Optional
 class Event:
     id: int | None = None
     time: str | None = None
-    user: str | None = None
+    user_id: int | None = None
     value: int | None = None

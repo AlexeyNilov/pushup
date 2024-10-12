@@ -8,6 +8,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+from service.repo import is_number, save_pushup
 
 
 def authorized_only(handler):
@@ -34,15 +35,21 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 @authorized_only
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text(f"Logged {update.message.text} push-ups")
+async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    if is_number(update.message.text):
+        save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
+        await update.message.reply_text(f"Logged {update.message.text} push-ups")
+    else:
+        await update.message.reply_text("Response is not implemented")
 
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+    application.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
+    )
 
     # Start the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)

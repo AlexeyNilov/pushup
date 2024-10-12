@@ -1,6 +1,11 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
 from telegram import Update, User, Message
+
+import os
+
+os.environ["PUSHUP_DB_PATH"] = "db/test_empty.sqlite"
+
 from bot import cody as bot
 
 
@@ -51,3 +56,19 @@ async def test_start_command_fail(msg, illegal_update):
     msg.reply_text.assert_called_once_with(
         "Sorry, you are not authorized to use this bot."
     )
+
+
+@pytest.mark.asyncio
+async def test_parse_message(msg, authorized_update):
+    context = MagicMock()
+    authorized_update.message.text = "10"
+    await bot.parse_message(authorized_update, context)
+    msg.reply_text.assert_called_once_with("Logged 10 push-ups")
+
+
+@pytest.mark.asyncio
+async def test_parse_message_fail(msg, authorized_update):
+    context = MagicMock()
+    authorized_update.message.text = "test"
+    await bot.parse_message(authorized_update, context)
+    msg.reply_text.assert_called_once_with("Response is not implemented")
