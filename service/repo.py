@@ -1,4 +1,4 @@
-from data.fastlite_db import DB, EventNotFound
+from data.fastlite_db import DB
 from sqlite_minutils.db import Database
 from datetime import datetime, timezone
 
@@ -26,24 +26,18 @@ def is_number(msg: str) -> bool:
 def get_sum_for_today(user_id: int, db: Database = DB) -> int:
     sql = f"SELECT SUM(value) AS sum FROM event WHERE user_id = {user_id} AND date(time) = date('now');"
     data = db.q(sql)
-    if not data:
-        raise EventNotFound
     return data[0]["sum"] or 0
 
 
 def get_max_for_today(user_id: int, db: Database = DB) -> int:
     sql = f"SELECT MAX(value) AS max_value FROM event WHERE user_id = {user_id} AND date(time) = date('now');"
     data = db.q(sql)
-    if not data:
-        raise EventNotFound
     return data[0]["max_value"] or 0
 
 
 def get_max_all_time(user_id: int, db: Database = DB) -> int:
     sql = f"SELECT MAX(value) AS max_value FROM event WHERE user_id = {user_id};"
     data = db.q(sql)
-    if not data:
-        raise EventNotFound
     return data[0]["max_value"] or 0
 
 
@@ -57,6 +51,4 @@ def get_average(user_id: int, limit: int = 100, db: Database = DB) -> int:
     LIMIT {limit}
     );"""
     data = db.q(sql)
-    if not data:
-        raise EventNotFound
     return data[0]["average_value"] or 0
