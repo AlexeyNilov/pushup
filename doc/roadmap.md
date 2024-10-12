@@ -1,9 +1,6 @@
 # Roadmap and todo
 
-## Infra
-
-## Feature
-
+* id check decor and negative test
 * add counts from chat
 * /stat
 * /graph
