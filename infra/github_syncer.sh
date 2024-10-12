@@ -15,3 +15,4 @@ elif [ "$LOCAL_COMMIT" = "$BASE_COMMIT" ]; then
     echo "Starting update"
     git pull
     systemctl restart cody_bot.service
+fi
