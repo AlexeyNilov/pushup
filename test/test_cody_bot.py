@@ -43,16 +43,16 @@ def illegal_update(illegal_user, msg):
 
 
 @pytest.mark.asyncio
-async def test_start_command(msg, authorized_update):
+async def test_stats_command(msg, authorized_update):
     context = MagicMock()
-    await bot.start(authorized_update, context)
-    msg.reply_text.assert_called_once_with("Hello! You are authorized.")
+    await bot.stats(authorized_update, context)
+    msg.reply_text.assert_called_once_with("Sum for today: 0")
 
 
 @pytest.mark.asyncio
-async def test_start_command_fail(msg, illegal_update):
+async def test_stats_command_fail(msg, illegal_update):
     context = MagicMock()
-    await bot.start(illegal_update, context)
+    await bot.stats(illegal_update, context)
     msg.reply_text.assert_called_once_with(
         "Sorry, you are not authorized to use this bot."
     )

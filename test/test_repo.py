@@ -28,3 +28,10 @@ def test_save_pushup(empty_db):
 def test_is_number():
     assert repo.is_number("10")
     assert repo.is_number("text") is False
+
+
+def test_sum_pushups(empty_db):
+    repo.save_pushup(value=10, user_id=1, db=empty_db)
+    repo.save_pushup(value=20, user_id=1, db=empty_db)
+    repo.save_pushup(value=20, user_id=2, db=empty_db)
+    assert repo.sum_pushups(user_id=1, db=empty_db) == 30

@@ -1,4 +1,4 @@
-from data.fastlite_db import DB
+from data.fastlite_db import DB, EventNotFound
 from sqlite_minutils.db import Database
 from datetime import datetime, timezone
 
@@ -21,3 +21,11 @@ def is_number(msg: str) -> bool:
         return True
     except ValueError:
         return False
+
+
+def sum_pushups(user_id: int, db: Database = DB) -> int:
+    sql = f"SELECT SUM(value) FROM event WHERE user_id = {user_id} AND date(time) = date('now');"
+    data = db.q(sql)
+    if not data:
+        raise EventNotFound
+    return data[0]["SUM(value)"] or 0

@@ -18,6 +18,10 @@ event_structure = dict(
 )
 
 
+class EventNotFound(Exception):
+    pass
+
+
 def create_event_table(db=DB) -> fl.Table:
     event = db.t.event
     if event not in db.t:

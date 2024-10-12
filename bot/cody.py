@@ -8,7 +8,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from service.repo import is_number, save_pushup
+from service.repo import is_number, save_pushup, sum_pushups
 
 
 def authorized_only(handler):
@@ -30,8 +30,9 @@ def authorized_only(handler):
 
 
 @authorized_only
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Hello! You are authorized.")
+async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    sum_for_today = sum_pushups(user_id=update.effective_user.id)
+    await update.message.reply_text(f"Sum for today: {sum_for_today}")
 
 
 @authorized_only
@@ -46,7 +47,7 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
-    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("start", stats))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )
