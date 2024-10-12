@@ -46,7 +46,7 @@ def illegal_update(illegal_user, msg):
 async def test_stats_command(msg, authorized_update):
     context = MagicMock()
     await bot.stats(authorized_update, context)
-    msg.reply_text.assert_called_once_with("Sum for today: 0")
+    msg.reply_text.assert_called_once_with("Today sum: 0, max: 0")
 
 
 @pytest.mark.asyncio

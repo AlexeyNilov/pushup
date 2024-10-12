@@ -35,3 +35,9 @@ def test_sum_pushups(empty_db):
     repo.save_pushup(value=20, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=2, db=empty_db)
     assert repo.sum_pushups(user_id=1, db=empty_db) == 30
+
+
+def test_max_pushups(empty_db):
+    repo.save_pushup(value=10, user_id=1, db=empty_db)
+    repo.save_pushup(value=20, user_id=1, db=empty_db)
+    assert repo.max_pushups(user_id=1, db=empty_db) == 20

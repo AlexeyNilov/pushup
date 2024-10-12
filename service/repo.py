@@ -29,3 +29,11 @@ def sum_pushups(user_id: int, db: Database = DB) -> int:
     if not data:
         raise EventNotFound
     return data[0]["SUM(value)"] or 0
+
+
+def max_pushups(user_id: int, db: Database = DB) -> int:
+    sql = f"SELECT MAX(value) FROM event WHERE user_id = {user_id} AND date(time) = date('now');"
+    data = db.q(sql)
+    if not data:
+        raise EventNotFound
+    return data[0]["MAX(value)"] or 0
