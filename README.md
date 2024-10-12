@@ -1,6 +1,6 @@
 # Push-up trainer bot
 
-## Install bot
+## Install code
 
 ```
 python3.11 -m venv .venv
