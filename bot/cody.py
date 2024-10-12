@@ -18,6 +18,7 @@ from service.repo import (
 )
 from service.idea import get_idea
 from service.warmup import get_warmup
+from service.cooldown import get_cool_down
 
 
 def authorized_only(handler):
@@ -79,6 +80,7 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 @authorized_only
 async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
+    await update.message.reply_html(f"<b>Cool down</b>:\n{get_cool_down()}")
 
 
 @authorized_only
