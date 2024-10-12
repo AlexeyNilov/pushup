@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/bash /home/ec2-user/pushup/infra/github_syncer.sh
-User=root
+User=ec2-user
 Group=systemd-journal
 
 [Install]
