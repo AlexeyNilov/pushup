@@ -1,5 +1,6 @@
 # Roadmap and todo
 
+* fix mypy
 * warmup and cooldown yamls
 * /advice
 

@@ -17,6 +17,7 @@ from service.repo import (
     get_record,
 )
 from service.idea import get_idea
+from service.warmup import get_warmup
 
 
 def authorized_only(handler):
@@ -71,11 +72,17 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 
 @authorized_only
+async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(f"Warmup: {get_warmup()}")
+
+
+@authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
         "/stats - Show today's statistics\n"
         "/record - Show your records\n"
+        "/advice - Get training advice\n"
         "/help - Show this help message"
     )
     await update.message.reply_text(commands)
@@ -86,6 +93,7 @@ def main():
 
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("record", stats_all_time))
+    application.add_handler(CommandHandler("advice", get_advice))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
