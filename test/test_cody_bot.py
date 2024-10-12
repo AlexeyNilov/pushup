@@ -11,24 +11,24 @@ from data.fastlite_db import recreate_db
 
 
 @pytest.fixture
-def authorized_user():
+def authorized_user() -> User:
     return User(id=123456789, is_bot=False, first_name="TestUser")
 
 
 @pytest.fixture
-def illegal_user():
+def illegal_user() -> User:
     return User(id=111111111, is_bot=False, first_name="TestUser")
 
 
 @pytest.fixture
-def msg():
+def msg() -> MagicMock:
     message = MagicMock(spec=Message)
     message.reply_text = AsyncMock()
     return message
 
 
 @pytest.fixture
-def authorized_update(authorized_user, msg):
+def authorized_update(authorized_user, msg) -> MagicMock:
     recreate_db()
     upd = MagicMock(spec=Update)
     upd.effective_user = authorized_user
@@ -37,7 +37,7 @@ def authorized_update(authorized_user, msg):
 
 
 @pytest.fixture
-def illegal_update(illegal_user, msg):
+def illegal_update(illegal_user, msg) -> MagicMock:
     upd = MagicMock(spec=Update)
     upd.effective_user = illegal_user
     upd.message = msg
@@ -65,7 +65,11 @@ async def test_parse_message(msg, authorized_update):
     context = MagicMock()
     authorized_update.message.text = "10"
     await bot.parse_message(authorized_update, context)
-    msg.reply_text.assert_called_once_with("Logged 10 push-ups")
+    msg.reply_text.assert_any_call("Logged 10 push-ups")
+    msg.reply_text.assert_any_call("Good job!")
+    authorized_update.message.text = "5"
+    await bot.parse_message(authorized_update, context)
+    msg.reply_text.assert_any_call("Logged 5 push-ups")
 
 
 @pytest.mark.asyncio
