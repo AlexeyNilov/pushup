@@ -85,3 +85,10 @@ async def test_record(msg, authorized_update):
     context = MagicMock()
     await bot.stats_all_time(authorized_update, context)
     msg.reply_text.assert_called_once_with("Record set: 0")
+
+
+@pytest.mark.asyncio
+async def test_get_advice(msg, authorized_update):
+    context = MagicMock()
+    await bot.get_advice(authorized_update, context)
+    msg.reply_text.assert_any_call("")

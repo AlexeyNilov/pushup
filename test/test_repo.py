@@ -1,7 +1,5 @@
 import pytest
 import fastlite as fl
-
-# from sqlite_minutils.db import NotFoundError
 from data.fastlite_db import create_event_table
 from service import repo
 

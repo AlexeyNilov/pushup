@@ -15,10 +15,12 @@ from service.repo import (
     get_sum_for_today,
     get_max_for_today,
     get_max_all_time,
+    get_average,
 )
 from service.idea import get_idea
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
+from service.workout import get_workout
 
 
 def authorized_only(handler):
@@ -80,6 +82,11 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 @authorized_only
 async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
+    w = get_workout(
+        avg_rep=get_average(user_id=update.effective_user.id),
+        max_rep=get_max_all_time(user_id=update.effective_user.id),
+    )
+    await update.message.reply_html(f"<b>Workout</b>:\n{w}")
     await update.message.reply_html(f"<b>Cool down</b>:\n{get_cool_down()}")
 
 
