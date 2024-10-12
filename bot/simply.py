@@ -4,7 +4,6 @@ from telegram.ext import Application, CommandHandler
 
 
 async def start(update: Update, context):
-    # Check if the user ID matches your authorized ID
     if update.effective_user.id in AUTHORIZED_IDS:
         await update.message.reply_text("Hello! You are authorized.")
     else:
