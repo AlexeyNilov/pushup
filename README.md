@@ -19,4 +19,6 @@ cp *.timer *.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable github_syncer.timer
 systemctl enable github_syncer.service
+systemctl enable cody_bot.service
+systemctl start cody_bot.service
 ```
