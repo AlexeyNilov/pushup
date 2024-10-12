@@ -51,4 +51,7 @@ def get_average(user_id: int, limit: int = 100, db: Database = DB) -> int:
     LIMIT {limit}
     );"""
     data = db.q(sql)
-    return data[0]["average_value"] or 0
+    if data[0]["average_value"]:
+        return int(round(data[0]["average_value"], 0))
+    else:
+        return 0
