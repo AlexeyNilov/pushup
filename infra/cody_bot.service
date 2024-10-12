@@ -1,13 +1,15 @@
 [Unit]
-Description=Sync code from Github
+Description=Cody Bot
+After=network.target
 
 [Service]
 Type=simple
 Restart=always
 RestartSec=30
+WorkingDirectory=/home/ec2-user/pushup/
 ExecStart=/usr/bin/bash /home/ec2-user/pushup/infra/start_bot.sh
 User=ec2-user
 Group=systemd-journal
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
