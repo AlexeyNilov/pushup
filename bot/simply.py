@@ -13,8 +13,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
-
-    # Set up the application (replaces Updater)
     application = Application.builder().token(BOT_TOKEN).build()
 
     # Add command handlers
