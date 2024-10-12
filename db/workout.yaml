@@ -1,0 +1,4 @@
+Pushup Pyramid:
+  desc: Start with {start_rep} reps, increase by 2 reps each set until you hit your current max ({max_rep} reps), then descend back down to {start_rep} reps. Rest for 45-60 seconds between sets.
+Core and Pushup Supersets:
+  desc: Start with pushups - 5 sets of {avg_rep} reps (rest 60 seconds between sets). Finish with planks - 3 sets, hold for 45 seconds.

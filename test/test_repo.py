@@ -43,8 +43,14 @@ def test_get_max_for_today(empty_db):
     assert repo.get_max_for_today(user_id=1, db=empty_db) == 20
 
 
-def test_record(empty_db):
+def test_get_max_all_time(empty_db):
     repo.save_pushup(value=10, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=2, db=empty_db)
-    assert repo.get_record(user_id=1, db=empty_db) == 20
+    assert repo.get_max_all_time(user_id=1, db=empty_db) == 20
+
+
+def test_get_average(empty_db):
+    repo.save_pushup(value=10, user_id=1, db=empty_db)
+    repo.save_pushup(value=20, user_id=1, db=empty_db)
+    assert repo.get_average(user_id=1, db=empty_db) == 15

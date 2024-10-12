@@ -18,3 +18,4 @@ class Profile:
     goal_set: int | None = None
     goal_per_day: int | None = None
     training_mode: str | None = None
+    training_day: int | None = None

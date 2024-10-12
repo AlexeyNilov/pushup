@@ -14,7 +14,7 @@ from service.repo import (
     save_pushup,
     get_sum_for_today,
     get_max_for_today,
-    get_record,
+    get_max_all_time,
 )
 from service.idea import get_idea
 from service.warmup import get_warmup
@@ -53,7 +53,7 @@ async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    max_all_time = get_record(user_id=update.effective_user.id)
+    max_all_time = get_max_all_time(user_id=update.effective_user.id)
     await update.message.reply_text(f"Record set: {max_all_time}")
 
 
@@ -65,7 +65,7 @@ async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message.text and is_number(update.message.text):
-        max_all_time = get_record(user_id=update.effective_user.id)
+        max_all_time = get_max_all_time(user_id=update.effective_user.id)
         save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
         await update.message.reply_text(f"Logged {update.message.text} push-ups")
 
