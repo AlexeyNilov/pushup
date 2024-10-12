@@ -1,8 +1,9 @@
 # Roadmap and todo
 
 * fix mypy
-* warmup and cooldown yamls
+* cooldown yamls
 * /advice
+* get workout description
 
 ## UI
 

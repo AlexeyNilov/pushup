@@ -73,7 +73,9 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 @authorized_only
 async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(f"Warmup: {get_warmup()}")
+    await update.message.reply_text(
+        f"<b>Warmup</b>:\n {get_warmup()}", parse_mode="HTML"
+    )
 
 
 @authorized_only
