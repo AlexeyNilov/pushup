@@ -16,5 +16,6 @@ PYTHONPATH=${PYTHONPATH}:. python sample/simply.py
 ```
 cd /home/ec2-user/pushup/infra
 cp *.timer *.service /etc/systemd/system/
+systemctl daemon-reload
 
 ```
