@@ -5,3 +5,7 @@
 * /stat
 * /graph
 * /advice
+
+## UI
+
+* add bot avatar, description, intro
