@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* show ideas randomly
 * /advice
 
 ## UI

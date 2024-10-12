@@ -1,5 +1,6 @@
 from conf.settings import BOT_TOKEN, AUTHORIZED_IDS
 from functools import wraps
+import random
 from telegram import Update
 from telegram.ext import (
     Application,
@@ -15,6 +16,7 @@ from service.repo import (
     get_max_for_today,
     get_record,
 )
+from service.idea import get_idea
 
 
 def authorized_only(handler):
@@ -48,14 +50,22 @@ async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"Record set: {max_all_time}")
 
 
+async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if random.randint(1, 5) == 1:
+        await update.message.reply_text(get_idea())
+
+
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if is_number(update.message.text):
         max_all_time = get_record(user_id=update.effective_user.id)
         save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
         await update.message.reply_text(f"Logged {update.message.text} push-ups")
+
         if int(update.message.text) > max_all_time:
             await update.message.reply_text("Good job!")
+        else:
+            await generate_idea(update=update, context=context)
     else:
         await update.message.reply_text("Response is not implemented")
 
