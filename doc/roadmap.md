@@ -1,5 +1,6 @@
 # Roadmap and todo
 
+* warmup and cooldown yamls
 * /advice
 
 ## UI
