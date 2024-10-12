@@ -14,5 +14,7 @@ elif [ "$LOCAL_COMMIT" = "$BASE_COMMIT" ]; then
     echo "The local repository is behind the remote repository"
     echo "Starting update"
     git pull
+    source .venv/bin/activate
+    pip install -r requirements.txt
     sudo systemctl restart cody_bot.service
 fi
