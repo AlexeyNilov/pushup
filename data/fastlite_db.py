@@ -18,6 +18,16 @@ event_structure = dict(
 )
 
 
+profile_structure = dict(
+    user_id=int,
+    max_set=int,
+    max_per_day=int,
+    goal_set=int,
+    goal_per_day=int,
+    training_mode=str,
+)
+
+
 class EventNotFound(Exception):
     pass
 
@@ -29,8 +39,16 @@ def create_event_table(db=DB) -> fl.Table:
     return event
 
 
+def create_profile_table(db=DB) -> fl.Table:
+    profile = db.t.profile
+    if profile not in db.t:
+        profile.create(profile_structure, pk="user_id")
+    return profile
+
+
 TABLES: Dict[str, Callable] = {
     "event": create_event_table,
+    "profile": create_profile_table,
 }
 
 
