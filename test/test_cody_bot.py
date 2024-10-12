@@ -7,6 +7,7 @@ import os
 os.environ["PUSHUP_DB_PATH"] = "db/test_empty.sqlite"
 
 from bot import cody as bot
+from data.fastlite_db import recreate_db
 
 
 @pytest.fixture
@@ -28,6 +29,7 @@ def msg():
 
 @pytest.fixture
 def authorized_update(authorized_user, msg):
+    recreate_db()
     upd = MagicMock(spec=Update)
     upd.effective_user = authorized_user
     upd.message = msg
@@ -45,14 +47,14 @@ def illegal_update(illegal_user, msg):
 @pytest.mark.asyncio
 async def test_stats_command(msg, authorized_update):
     context = MagicMock()
-    await bot.stats(authorized_update, context)
+    await bot.stats_for_today(authorized_update, context)
     msg.reply_text.assert_called_once_with("Today sum: 0, max: 0")
 
 
 @pytest.mark.asyncio
 async def test_stats_command_fail(msg, illegal_update):
     context = MagicMock()
-    await bot.stats(illegal_update, context)
+    await bot.stats_for_today(illegal_update, context)
     msg.reply_text.assert_called_once_with(
         "Sorry, you are not authorized to use this bot."
     )
@@ -72,3 +74,10 @@ async def test_parse_message_fail(msg, authorized_update):
     authorized_update.message.text = "test"
     await bot.parse_message(authorized_update, context)
     msg.reply_text.assert_called_once_with("Response is not implemented")
+
+
+@pytest.mark.asyncio
+async def test_record(msg, authorized_update):
+    context = MagicMock()
+    await bot.stats_all_time(authorized_update, context)
+    msg.reply_text.assert_called_once_with("Record set: 0")

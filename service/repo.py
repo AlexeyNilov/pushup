@@ -23,7 +23,7 @@ def is_number(msg: str) -> bool:
         return False
 
 
-def sum_pushups(user_id: int, db: Database = DB) -> int:
+def get_sum_for_today(user_id: int, db: Database = DB) -> int:
     sql = f"SELECT SUM(value) FROM event WHERE user_id = {user_id} AND date(time) = date('now');"
     data = db.q(sql)
     if not data:
@@ -31,8 +31,16 @@ def sum_pushups(user_id: int, db: Database = DB) -> int:
     return data[0]["SUM(value)"] or 0
 
 
-def max_pushups(user_id: int, db: Database = DB) -> int:
+def get_max_for_today(user_id: int, db: Database = DB) -> int:
     sql = f"SELECT MAX(value) FROM event WHERE user_id = {user_id} AND date(time) = date('now');"
+    data = db.q(sql)
+    if not data:
+        raise EventNotFound
+    return data[0]["MAX(value)"] or 0
+
+
+def get_record(user_id: int, db: Database = DB) -> int:
+    sql = f"SELECT MAX(value) FROM event WHERE user_id = {user_id};"
     data = db.q(sql)
     if not data:
         raise EventNotFound

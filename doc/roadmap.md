@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* /stat
 * /graph
 * /advice
 

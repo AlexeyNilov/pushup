@@ -8,7 +8,13 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from service.repo import is_number, save_pushup, sum_pushups, max_pushups
+from service.repo import (
+    is_number,
+    save_pushup,
+    get_sum_for_today,
+    get_max_for_today,
+    get_record,
+)
 
 
 def authorized_only(handler):
@@ -30,10 +36,16 @@ def authorized_only(handler):
 
 
 @authorized_only
-async def stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    sum_for_today = sum_pushups(user_id=update.effective_user.id)
-    max_for_today = max_pushups(user_id=update.effective_user.id)
+async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    sum_for_today = get_sum_for_today(user_id=update.effective_user.id)
+    max_for_today = get_max_for_today(user_id=update.effective_user.id)
     await update.message.reply_text(f"Today sum: {sum_for_today}, max: {max_for_today}")
+
+
+@authorized_only
+async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    max_all_time = get_record(user_id=update.effective_user.id)
+    await update.message.reply_text(f"Record set: {max_all_time}")
 
 
 @authorized_only
@@ -45,10 +57,22 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         await update.message.reply_text("Response is not implemented")
 
 
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Sends a list of available commands to the user."""
+    commands = (
+        "/stats - Show today's statistics\n"
+        "/record - Show your records\n"
+        "/help - Show this help message"
+    )
+    await update.message.reply_text(commands)
+
+
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
-    application.add_handler(CommandHandler("stats", stats))
+    application.add_handler(CommandHandler("stats", stats_for_today))
+    application.add_handler(CommandHandler("record", stats_all_time))
+    application.add_handler(CommandHandler("help", help_command))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )

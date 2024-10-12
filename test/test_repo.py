@@ -30,14 +30,21 @@ def test_is_number():
     assert repo.is_number("text") is False
 
 
-def test_sum_pushups(empty_db):
+def test_get_sum_for_today(empty_db):
     repo.save_pushup(value=10, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=2, db=empty_db)
-    assert repo.sum_pushups(user_id=1, db=empty_db) == 30
+    assert repo.get_sum_for_today(user_id=1, db=empty_db) == 30
 
 
-def test_max_pushups(empty_db):
+def test_get_max_for_today(empty_db):
     repo.save_pushup(value=10, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=1, db=empty_db)
-    assert repo.max_pushups(user_id=1, db=empty_db) == 20
+    assert repo.get_max_for_today(user_id=1, db=empty_db) == 20
+
+
+def test_record(empty_db):
+    repo.save_pushup(value=10, user_id=1, db=empty_db)
+    repo.save_pushup(value=20, user_id=1, db=empty_db)
+    repo.save_pushup(value=20, user_id=2, db=empty_db)
+    assert repo.get_record(user_id=1, db=empty_db) == 20
