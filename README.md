@@ -1,6 +1,6 @@
 # Push-up trainer bot
 
-## Install
+## Install bot
 
 ```
 python3.11 -m venv .venv
@@ -9,4 +9,12 @@ python -V
 pip install -r requirements.txt
 cp conf/settings.py.sample conf/settings.py
 PYTHONPATH=${PYTHONPATH}:. python sample/simply.py
+```
+
+## Install services
+
+```
+cd /home/ec2-user/pushup/infra
+cp *.timer *.service /etc/systemd/system/
+
 ```
