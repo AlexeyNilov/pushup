@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* cooldown yamls
 * /advice
 * get workout description
 
