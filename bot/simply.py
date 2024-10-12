@@ -1,9 +1,9 @@
 from conf.settings import BOT_TOKEN, AUTHORIZED_IDS
 from telegram import Update
-from telegram.ext import Application, CommandHandler
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 
-async def start(update: Update, context):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id in AUTHORIZED_IDS:
         await update.message.reply_text("Hello! You are authorized.")
     else:
@@ -12,7 +12,6 @@ async def start(update: Update, context):
         )
 
 
-# Main function to set up the bot
 def main():
 
     # Set up the application (replaces Updater)
