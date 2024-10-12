@@ -30,9 +30,13 @@ TABLES: Dict[str, Callable] = {
 }
 
 
+def prepare_db(db: Database = DB):
+    for create_func in TABLES.values():
+        create_func(db)
+
+
 def recreate_db(db: Database = DB):
     for t in db.tables:
         t.drop()
 
-    for create_func in TABLES.values():
-        create_func(db)
+    prepare_db(db=db)
