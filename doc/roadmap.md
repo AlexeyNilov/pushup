@@ -6,3 +6,8 @@
 * bot service (systemd)
 
 ## Feature
+
+* add counts from chat
+* /stat
+* /graph
+* /advice
