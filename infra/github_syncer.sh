@@ -16,5 +16,6 @@ elif [ "$LOCAL_COMMIT" = "$BASE_COMMIT" ]; then
     git pull
     source .venv/bin/activate
     pip install -r requirements.txt
+    PYTHONPATH=${PYTHONPATH}:. python sample/migrate_db.py
     sudo systemctl restart cody_bot.service
 fi

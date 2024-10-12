@@ -9,4 +9,3 @@
 ## Infra
 
 * backup sqlite to s3?
-* prepare db during git sync (to get new tables)
