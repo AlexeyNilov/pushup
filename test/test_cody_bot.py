@@ -91,4 +91,4 @@ async def test_record(msg, authorized_update):
 async def test_get_advice(msg, authorized_update):
     context = MagicMock()
     await bot.get_advice(authorized_update, context)
-    msg.reply_text.assert_any_call("")
+    msg.reply_html.assert_called()
