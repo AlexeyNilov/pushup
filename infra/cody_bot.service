@@ -2,7 +2,9 @@
 Description=Sync code from Github
 
 [Service]
-Type=oneshot
+Type=simple
+Restart=always
+RestartSec=30
 ExecStart=/usr/bin/bash /home/ec2-user/pushup/infra/start_bot.sh
 User=ec2-user
 Group=systemd-journal
