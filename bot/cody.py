@@ -27,38 +27,51 @@ def authorized_only(handler):
     async def wrapper(
         update: Update, context: ContextTypes.DEFAULT_TYPE, *args, **kwargs
     ):
+        if update.effective_user is None:
+            raise ValueError("No user found in the update.")
         user_id = update.effective_user.id
         if user_id in AUTHORIZED_IDS:
             return await handler(update, context, *args, **kwargs)
         else:
-            await update.message.reply_text(
-                "Sorry, you are not authorized to use this bot."
-            )
+            if update.message:
+                await update.message.reply_text(
+                    "Sorry, you are not authorized to use this bot."
+                )
 
     return wrapper
 
 
 @authorized_only
 async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user is None:
+        raise ValueError("No user found in the update.")
     sum_for_today = get_sum_for_today(user_id=update.effective_user.id)
     max_for_today = get_max_for_today(user_id=update.effective_user.id)
-    await update.message.reply_text(f"Today sum: {sum_for_today}, max: {max_for_today}")
+    if update.message:
+        await update.message.reply_text(
+            f"Today sum: {sum_for_today}, max: {max_for_today}"
+        )
 
 
 @authorized_only
 async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if update.effective_user is None:
+        raise ValueError("No user found in the update.")
     max_all_time = get_record(user_id=update.effective_user.id)
-    await update.message.reply_text(f"Record set: {max_all_time}")
+    if update.message:
+        await update.message.reply_text(f"Record set: {max_all_time}")
 
 
 async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if random.randint(1, 5) == 1:
+    if update.message and random.randint(1, 5) == 1:
         await update.message.reply_text(get_idea())
 
 
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if is_number(update.message.text):
+    if update.effective_user is None:
+        raise ValueError("No user found in the update.")
+    if update.message and update.message.text and is_number(update.message.text):
         max_all_time = get_record(user_id=update.effective_user.id)
         save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
         await update.message.reply_text(f"Logged {update.message.text} push-ups")
@@ -68,12 +81,14 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         else:
             await generate_idea(update=update, context=context)
     else:
-        await update.message.reply_text("Response is not implemented")
+        if update.message:
+            await update.message.reply_text("Response is not implemented")
 
 
 @authorized_only
 async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_html(f"<b>Warmup</b>:\n{get_warmup()}")
+    if update.message:
+        await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
 
 
 @authorized_only
@@ -85,7 +100,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/advice - Get training advice\n"
         "/help - Show this help message"
     )
-    await update.message.reply_text(commands)
+    if update.message:
+        await update.message.reply_text(commands)
 
 
 def main():
