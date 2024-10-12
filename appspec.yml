@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/pushup
+hooks:
+  AfterInstall:
+    - location: infra/restart_service.sh
+      timeout: 300
+      runas: ec2-user
