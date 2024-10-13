@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* How to increment training days?
 * fix mypy
 * /stop - switch to the freestyle mode
 * /join (ask for age, set goal based on the FS)

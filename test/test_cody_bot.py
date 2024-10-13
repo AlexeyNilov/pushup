@@ -44,16 +44,19 @@ def illegal_update(illegal_user, msg) -> MagicMock:
     return upd
 
 
+@pytest.fixture
+def context() -> MagicMock:
+    return MagicMock()
+
+
 @pytest.mark.asyncio
-async def test_stats_command(msg, authorized_update):
-    context = MagicMock()
+async def test_stats_command(msg, authorized_update, context):
     await bot.stats_for_today(authorized_update, context)
     msg.reply_text.assert_called_once_with("Today sum: 0, max: 0")
 
 
 @pytest.mark.asyncio
-async def test_stats_command_fail(msg, illegal_update):
-    context = MagicMock()
+async def test_stats_command_fail(msg, illegal_update, context):
     await bot.stats_for_today(illegal_update, context)
     msg.reply_text.assert_called_once_with(
         "Sorry, you are not authorized to use this bot."
@@ -61,8 +64,7 @@ async def test_stats_command_fail(msg, illegal_update):
 
 
 @pytest.mark.asyncio
-async def test_parse_message(msg, authorized_update):
-    context = MagicMock()
+async def test_parse_message(msg, authorized_update, context):
     authorized_update.message.text = "10"
     await bot.parse_message(authorized_update, context)
     msg.reply_text.assert_any_call("Logged 10 push-ups")
@@ -73,32 +75,34 @@ async def test_parse_message(msg, authorized_update):
 
 
 @pytest.mark.asyncio
-async def test_parse_message_fail(msg, authorized_update):
-    context = MagicMock()
+async def test_parse_message_fail(msg, authorized_update, context):
     authorized_update.message.text = "test"
     await bot.parse_message(authorized_update, context)
     msg.reply_text.assert_called_once_with("Response is not implemented")
 
 
 @pytest.mark.asyncio
-async def test_record(msg, authorized_update):
-    context = MagicMock()
+async def test_record(msg, authorized_update, context):
     await bot.stats_all_time(authorized_update, context)
     msg.reply_text.assert_called_once_with("Record set: 0, sum per day: 0")
 
 
 @pytest.mark.asyncio
-async def test_get_advice(msg, authorized_update):
-    context = MagicMock()
+async def test_get_advice(msg, authorized_update, context):
     await bot.get_advice(authorized_update, context)
     msg.reply_html.assert_called()
     # msg.reply_html.assert_any_call("")
 
 
 @pytest.mark.asyncio
-async def test_start_training_program(msg, authorized_update):
-    context = MagicMock()
+async def test_start_training_program(msg, authorized_update, context):
     await bot.start_training_program(authorized_update, context)
     msg.reply_text.assert_called_once_with(
         "Training program activated, call /advice to get recommended workout"
     )
+
+
+@pytest.mark.asyncio
+async def test_complete_workout(msg, authorized_update, context):
+    await bot.complete_workout(authorized_update, context)
+    msg.reply_text.assert_called_once_with("Workout completed!")

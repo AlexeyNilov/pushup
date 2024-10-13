@@ -9,16 +9,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from service.repo import (
-    is_number,
-    save_pushup,
-    get_sum_for_today,
-    get_max_for_today,
-    get_max_all_time,
-    sync_profile,
-    activate_training,
-    get_max_sum,
-)
+from service import repo
 from service.idea import get_idea
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
@@ -50,15 +41,15 @@ def authorized_only(handler):
 
 @authorized_only
 async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    sum_for_today = get_sum_for_today(user_id=update.effective_user.id)
-    max_for_today = get_max_for_today(user_id=update.effective_user.id)
+    sum_for_today = repo.get_sum_for_today(user_id=update.effective_user.id)
+    max_for_today = repo.get_max_for_today(user_id=update.effective_user.id)
     await update.message.reply_text(f"Today sum: {sum_for_today}, max: {max_for_today}")
 
 
 @authorized_only
 async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    max_all_time = get_max_all_time(user_id=update.effective_user.id)
-    max_sum = get_max_sum(user_id=update.effective_user.id)
+    max_all_time = repo.get_max_all_time(user_id=update.effective_user.id)
+    max_sum = repo.get_max_sum(user_id=update.effective_user.id)
     await update.message.reply_text(
         f"Record set: {max_all_time}, sum per day: {max_sum}"
     )
@@ -70,7 +61,7 @@ async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    max_all_time = get_max_all_time(user_id=update.effective_user.id)
+    max_all_time = repo.get_max_all_time(user_id=update.effective_user.id)
     if int(update.message.text) > max_all_time:
         await update.message.reply_text("Good job!")
     else:
@@ -79,7 +70,7 @@ async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def start_training_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    activate_training(user_id=update.effective_user.id)
+    repo.activate_training(user_id=update.effective_user.id)
     await update.message.reply_text(
         "Training program activated, call /advice to get recommended workout"
     )
@@ -87,14 +78,14 @@ async def start_training_program(update: Update, context: ContextTypes.DEFAULT_T
 
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message.text and not is_number(update.message.text):
+    if update.message.text and not repo.is_number(update.message.text):
         await update.message.reply_text("Response is not implemented")
         return
 
     await praise(update=update, context=context)
-    save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
+    repo.save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
     await update.message.reply_text(f"Logged {update.message.text} push-ups")
-    sync_profile(user_id=update.effective_user.id)
+    repo.sync_profile(user_id=update.effective_user.id)
 
 
 @authorized_only
@@ -107,13 +98,20 @@ async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 @authorized_only
+async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    repo.increment_training_day(user_id=update.effective_user.id)
+    await update.message.reply_text("Workout completed!")
+
+
+@authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
-        "/advice - Get training advice\n"
+        "/activate - Activate training program\n"
+        "/advice - Get workout advice\n"
+        "/done - Complete workout\n"
         "/help - Show this help message\n"
         "/record - Show your records\n"
-        "/start - Start training program\n"
         "/stats - Show today's statistics"
     )
     await update.message.reply_text(commands)
@@ -121,7 +119,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
-    application.add_handler(CommandHandler("start", start_training_program))
+    application.add_handler(CommandHandler("done", complete_workout))
+    application.add_handler(CommandHandler("activate", start_training_program))
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("advice", get_advice))

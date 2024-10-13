@@ -109,3 +109,14 @@ def get_max_sum(user_id: int, db: Database = DB) -> int:
     except ProfileNotFound:
         return 0
     return p.sum_per_day
+
+
+def increment_training_day(user_id: int, db: Database = DB):
+    try:
+        profile = get_profile(user_id, db)
+    except ProfileNotFound:
+        return
+
+    if profile.training_mode == "Program":
+        profile.training_day += 1
+    update_profile(dict(profile), db)
