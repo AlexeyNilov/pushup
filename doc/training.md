@@ -10,7 +10,7 @@
 
 ### Workout-Recover cycle
 
-3 days workout, 4 days rest
+7 days cycle: 3 days workout, 4 days rest (in any combination)
 
 ### Warm-Up Strategy
 

@@ -26,3 +26,16 @@ Power Push-Up Tempo: |
   3. {avg_rep} push-ups
   4. {avg_rep} push-ups
   5. {avg_rep+1}+ push-ups
+Yoga rest: |
+  Light stretching, walking, or yoga
+Bike rest: |
+  Jogging, cycling, walking
+Cardio rest: |
+  Light cardio, stretching, or yoga
+Core Stability: |
+  1. Pushups - 4 sets of {max_rep-20%} reps.
+  2. Plank - 3 sets, hold for 1 minute.
+  3. Side Plank - 3 sets, 30 seconds each side.
+Pushup Max Test: |
+  Test how many pushups you can do in one go. Try to reach beyond {max_rep}.
+  Rest, then do 2 more sets per {max_rep-30%}.
