@@ -57,7 +57,10 @@ async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     max_all_time = get_max_all_time(user_id=update.effective_user.id)
-    await update.message.reply_text(f"Record set: {max_all_time}")
+    max_sum = 0
+    await update.message.reply_text(
+        f"Record set: {max_all_time}, sum per day: {max_sum}"
+    )
 
 
 async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
