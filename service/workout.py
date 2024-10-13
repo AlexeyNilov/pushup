@@ -18,7 +18,7 @@ def get_workout(user_id: int, db: Database = DB) -> str:
     try:
         profile = get_profile(user_id, db=db)
         if profile.training_mode == "Program":
-            key = get_program()[profile.training_day]
+            key = get_program()[profile.training_day or 0]
     except ProfileNotFound:
         pass
 

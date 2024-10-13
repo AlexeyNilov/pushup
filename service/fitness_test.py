@@ -1,9 +1,9 @@
 """ Fitness tests/standards collection"""
 
-from typing import List, Tuple, Dict
+from typing import List, Tuple, Dict, Any
 
 
-AGE_GROUPS = [
+AGE_GROUPS_ARMY = [
     (17, 22, "17-22"),
     (23, 26, "22-26"),
     (27, 31, "27-31"),
@@ -37,7 +37,7 @@ def get_army_pushup_range(age: int) -> Tuple[int, int]:
         raise ValueError("Age must be at least 17")
 
     # Determine the age group based on the age
-    for min_age, max_age, age_group in AGE_GROUPS:
+    for min_age, max_age, age_group in AGE_GROUPS_ARMY:
         if min_age <= age <= max_age:
             return US_ARMY_AGE_RANGE[age_group]
 
@@ -45,7 +45,7 @@ def get_army_pushup_range(age: int) -> Tuple[int, int]:
 
 
 # Define age ranges and corresponding group names
-AGE_GROUPS: List[Tuple[int, int, str]] = [
+AGE_GROUPS: List[Tuple[int, Any, str]] = [
     (0, 29, "Under 30"),
     (30, 39, "30-39"),
     (40, 49, "40-49"),
@@ -54,7 +54,7 @@ AGE_GROUPS: List[Tuple[int, int, str]] = [
 ]
 
 # Define rating thresholds for each age group
-RATINGS: Dict[str, Dict[str, Tuple[int, int]]] = {
+RATINGS: Dict[str, Dict[str, Tuple[int, Any]]] = {
     "Under 30": {
         "Excellent": (51, float("inf")),
         "Very good": (41, 50),

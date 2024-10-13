@@ -62,7 +62,7 @@ async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
     max_all_time = repo.get_max_all_time(user_id=update.effective_user.id)
-    if int(update.message.text) > max_all_time:
+    if repo.convert_to_int(update.message.text) > max_all_time:
         await update.message.reply_text("Good job!")
     else:
         await generate_idea(update=update, context=context)
@@ -83,7 +83,9 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
         return
 
     await praise(update=update, context=context)
-    repo.save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
+    repo.save_pushup(
+        value=repo.convert_to_int(update.message.text), user_id=update.effective_user.id
+    )
     await update.message.reply_text(f"Logged {update.message.text} push-ups")
     repo.sync_profile(user_id=update.effective_user.id)
 

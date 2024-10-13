@@ -2,6 +2,7 @@ from data.fastlite_db import DB
 from sqlite_minutils.db import Database
 from datetime import datetime, timezone
 from model.profile import Profile
+from typing import Any
 
 
 class ProfileNotFound(Exception):
@@ -108,7 +109,7 @@ def get_max_sum(user_id: int, db: Database = DB) -> int:
         p = get_profile(user_id, db)
     except ProfileNotFound:
         return 0
-    return p.sum_per_day
+    return p.sum_per_day or 0
 
 
 def increment_training_day(user_id: int, db: Database = DB):
@@ -118,5 +119,12 @@ def increment_training_day(user_id: int, db: Database = DB):
         return
 
     if profile.training_mode == "Program":
-        profile.training_day += 1
+        profile.training_day = (profile.training_day or 0) + 1
     update_profile(dict(profile), db)
+
+
+def convert_to_int(text: str | Any) -> int:
+    if is_number(text):
+        return int(text)
+    else:
+        return 0
