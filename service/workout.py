@@ -3,6 +3,7 @@ import random
 
 
 WORKOUTS = load_yaml("db/workout.yaml")
+PROGRAM = load_yaml("db/program.yaml")
 
 
 def get_workout(avg_rep: int = 5, max_rep: int = 10) -> str:
@@ -16,3 +17,7 @@ def get_workout(avg_rep: int = 5, max_rep: int = 10) -> str:
     desc = desc.replace("{max_rep-20%}", str(int(max_rep * 0.8)))
     desc = desc.replace("{max_rep-30%}", str(int(max_rep * 0.7)))
     return f"<i>{key}</i>\n{desc}"
+
+
+def get_program() -> list:
+    return PROGRAM["Program"]
