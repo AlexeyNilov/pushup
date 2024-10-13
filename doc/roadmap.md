@@ -1,11 +1,11 @@
 # Roadmap and todo
 
-* check stretch strategy
 * update profile on event logging
 * /start - start training program
 * /stop - switch to the maintenance mode
 * /join (ask for age, set goal based on the FS)
 * add health warning on joining
+* /explain get workout description
 
 ## UI
 
@@ -20,7 +20,7 @@
 
 * /goal https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/conversationbot2.py
 * control rest pattern
-* get workout description
 * get feedback (feelings, state)
 * congrats on mil standard reach
 * congrats on human stats reach
+* /time - start timer

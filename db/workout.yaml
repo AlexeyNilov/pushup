@@ -1,5 +1,5 @@
 Pushup Pyramid: |
-  Start with {start_rep} reps, increase by 2 reps each set until you hit your current max ({max_rep-20%} reps), then descend back down to {start_rep} reps.
+  Start with {start_rep} reps, increase by 2 reps each set until you hit {max_rep-20%} reps, then descend back down to {start_rep} reps.
   Rest for 45-60 seconds between sets.
 Core and Pushup Supersets: |
   1. Start with pushups - 5 sets of {avg_rep} reps (rest 60 seconds between sets).
@@ -29,7 +29,7 @@ Power Push-Up Tempo: |
 Yoga rest: |
   Light stretching, walking, or yoga
 Bike rest: |
-  Jogging, cycling, walking
+  Light jogging, cycling, or walking
 Cardio rest: |
   Light cardio, stretching, or yoga
 Core Stability: |
