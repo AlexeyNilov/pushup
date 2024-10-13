@@ -4,7 +4,7 @@
 * training program based on stats
 * get feedback (feelings, state)
 * update profile on event logging
-* /join
+* /join (ask for age, set goal based on the FS)
 * add health warning on joining
 * /goal https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/conversationbot2.py
 
