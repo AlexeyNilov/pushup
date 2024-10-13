@@ -1,4 +1,6 @@
-# Compute configuration
+# How to run the bot on AWS EC2 for free
+
+## Compute configuration
 
 The bot runs on t3.micro based on AL 2023 AMI
 
@@ -31,7 +33,3 @@ systemctl enable github_syncer.service
 systemctl enable cody_bot.service
 systemctl start cody_bot.service
 ```
-
-## Secure
-
-* how to update system - https://docs.aws.amazon.com/linux/al2023/ug/managing-repos-os-updates.html

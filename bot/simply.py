@@ -1,3 +1,5 @@
+""" Simple bot to test installation """
+
 from conf.settings import BOT_TOKEN, AUTHORIZED_IDS
 from functools import wraps
 from telegram import Update
@@ -49,7 +51,6 @@ def main():
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
-    # Start the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
