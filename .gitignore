@@ -9,3 +9,4 @@ cache
 conf/settings.py
 *.sqlite
 *.sqlite*
+img/*
