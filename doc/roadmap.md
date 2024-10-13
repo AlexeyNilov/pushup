@@ -3,11 +3,11 @@
 * get workout description
 * training program based on stats
 * get feedback (feelings, state)
-* /rest - declare rest day
+* /rest - declare rest day??
 
 ## UI
 
-* add bot avatar, description, intro
+* add bot description, intro
 
 ## Infra
 
