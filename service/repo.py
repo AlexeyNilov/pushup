@@ -73,3 +73,31 @@ def get_profile(user_id: int, db: Database = DB) -> Profile:
     except Exception:
         raise ProfileNotFound
     return Profile(**data)
+
+
+def activate_training(user_id: int, db: Database = DB):
+    try:
+        profile = get_profile(user_id=user_id, db=db)
+    except ProfileNotFound:
+        profile = Profile(user_id=user_id)
+
+    profile.training_mode = "Program"
+    profile.training_day = 0
+    update_profile(dict(profile), db=db)
+
+
+def sync_profile(user_id: int, db: Database = DB):
+    try:
+        old_profile = get_profile(user_id, db)
+        sum_per_day_prev = old_profile.sum_per_day or 0
+    except ProfileNotFound:
+        sum_per_day_prev = 0
+
+    sum_per_day = get_sum_for_today(user_id, db)
+    max_all_time = get_max_all_time(user_id, db)
+    profile = Profile(
+        user_id=user_id,
+        max_set=max_all_time,
+        sum_per_day=max(sum_per_day, sum_per_day_prev),
+    )
+    update_profile(dict(profile), db)

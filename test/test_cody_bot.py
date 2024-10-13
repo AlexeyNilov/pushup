@@ -93,3 +93,12 @@ async def test_get_advice(msg, authorized_update):
     await bot.get_advice(authorized_update, context)
     msg.reply_html.assert_called()
     # msg.reply_html.assert_any_call("")
+
+
+@pytest.mark.asyncio
+async def test_start_training_program(msg, authorized_update):
+    context = MagicMock()
+    await bot.start_training_program(authorized_update, context)
+    msg.reply_text.assert_called_once_with(
+        "Training program activated, call /advice to get recommended workout"
+    )

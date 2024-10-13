@@ -16,15 +16,13 @@ from service.repo import (
     get_max_for_today,
     get_max_all_time,
     get_average,
-    update_profile,
-    get_profile,
-    ProfileNotFound,
+    sync_profile,
+    activate_training,
 )
 from service.idea import get_idea
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
 from service.workout import get_workout
-from model.profile import Profile
 
 
 def authorized_only(handler):
@@ -76,21 +74,12 @@ async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await generate_idea(update=update, context=context)
 
 
-def sync_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        old_profile = get_profile(user_id=update.effective_user.id)
-        sum_per_day_prev = old_profile.sum_per_day or 0
-    except ProfileNotFound:
-        sum_per_day_prev = 0
-
-    sum_per_day = get_sum_for_today(user_id=update.effective_user.id)
-    max_all_time = get_max_all_time(user_id=update.effective_user.id)
-    profile = Profile(
-        user_id=update.effective_user.id,
-        max_set=max_all_time,
-        sum_per_day=max(sum_per_day, sum_per_day_prev),
+@authorized_only
+async def start_training_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    activate_training(user_id=update.effective_user.id)
+    await update.message.reply_text(
+        "Training program activated, call /advice to get recommended workout"
     )
-    update_profile(dict(profile))
 
 
 @authorized_only
@@ -102,7 +91,7 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     await praise(update=update, context=context)
     save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
     await update.message.reply_text(f"Logged {update.message.text} push-ups")
-    sync_profile(update=update, context=context)
+    sync_profile(user_id=update.effective_user.id)
 
 
 @authorized_only
@@ -120,17 +109,18 @@ async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
-        "/stats - Show today's statistics\n"
-        "/record - Show your records\n"
         "/advice - Get training advice\n"
-        "/help - Show this help message"
+        "/help - Show this help message\n"
+        "/record - Show your records\n"
+        "/start - Start training program\n"
+        "/stats - Show today's statistics"
     )
     await update.message.reply_text(commands)
 
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
-
+    application.add_handler(CommandHandler("start", start_training_program))
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("advice", get_advice))

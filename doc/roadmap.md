@@ -1,10 +1,12 @@
 # Roadmap and todo
 
 * /start - start training program
-* /stop - switch to the maintenance mode
+* fix mypy
+* /stop - switch to the freestyle mode
 * /join (ask for age, set goal based on the FS)
 * add health warning on joining
 * /explain get workout description
+* add sum_per_day to /record
 
 ## UI
 

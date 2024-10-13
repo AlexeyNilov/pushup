@@ -61,3 +61,19 @@ def test_get_profile(empty_db):
     repo.update_profile({"user_id": 1}, db=empty_db)
     p = repo.get_profile(user_id=1, db=empty_db)
     assert p.user_id == 1
+
+
+def test_activate_training(empty_db):
+    repo.activate_training(user_id=1, db=empty_db)
+    p = repo.get_profile(user_id=1, db=empty_db)
+    assert p.training_day == 0
+    assert p.training_mode == "Program"
+
+
+def test_sync_profile(empty_db):
+    repo.update_profile({"user_id": 1, "sum_per_day": 10, "max_set": 5}, db=empty_db)
+    repo.save_pushup(value=20, user_id=1, db=empty_db)
+    repo.sync_profile(user_id=1, db=empty_db)
+    p = repo.get_profile(user_id=1, db=empty_db)
+    assert p.max_set == 20
+    assert p.sum_per_day == 20
