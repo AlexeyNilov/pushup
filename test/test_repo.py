@@ -89,3 +89,10 @@ def test_increment_training_day(empty_db):
     repo.increment_training_day(user_id=1, db=empty_db)
     p = repo.get_profile(user_id=1, db=empty_db)
     assert p.training_day == 1
+
+
+def test_increment_training_day_fail(empty_db):
+    repo.update_profile({"user_id": 1, "sum_per_day": 10, "max_set": 5}, db=empty_db)
+    repo.increment_training_day(user_id=1, db=empty_db)
+    p = repo.get_profile(user_id=1, db=empty_db)
+    assert p.training_day is None
