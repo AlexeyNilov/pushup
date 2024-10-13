@@ -1,9 +1,9 @@
 # Roadmap and todo
 
-* /stop - switch to the freestyle mode
+* /deactivate - switch to the freestyle mode
 * /join (ask for age, set goal based on the FS)
 * add health warning on joining
-* /explain get workout description
+* /explain get warmup/cooldown description
 
 ## UI
 
@@ -16,9 +16,8 @@
 
 ## Ideas
 
-* /rate
+* /rate ??
 * /goal https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/conversationbot2.py
-* control rest pattern
 * get feedback (feelings, state)
 * congrats on mil standard reach
 * congrats on human stats reach
