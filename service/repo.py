@@ -89,18 +89,14 @@ def activate_training(user_id: int, db: Database = DB):
 
 def sync_profile(user_id: int, db: Database = DB):
     try:
-        old_profile = get_profile(user_id, db)
-        sum_per_day_prev = old_profile.sum_per_day or 0
+        profile = get_profile(user_id, db)
+        sum_per_day_prev = profile.sum_per_day or 0
     except ProfileNotFound:
+        profile = Profile(user_id=user_id)
         sum_per_day_prev = 0
 
-    sum_per_day = get_sum_for_today(user_id, db)
-    max_all_time = get_max_all_time(user_id, db)
-    profile = Profile(
-        user_id=user_id,
-        max_set=max_all_time,
-        sum_per_day=max(sum_per_day, sum_per_day_prev),
-    )
+    profile.max_set = get_max_all_time(user_id, db)
+    profile.sum_per_day = max(get_sum_for_today(user_id, db), sum_per_day_prev)
     update_profile(dict(profile), db)
 
 
