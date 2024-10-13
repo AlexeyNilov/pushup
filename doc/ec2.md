@@ -1,5 +1,9 @@
 # How to run the bot on AWS EC2 for free
 
+* Why EC2?
+* Why sqlite
+* How to run your own bot (step-by-step)
+
 ## Compute configuration
 
 The bot runs on t3.micro based on AL 2023 AMI
