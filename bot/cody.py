@@ -16,11 +16,15 @@ from service.repo import (
     get_max_for_today,
     get_max_all_time,
     get_average,
+    update_profile,
+    get_profile,
+    ProfileNotFound,
 )
 from service.idea import get_idea
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
 from service.workout import get_workout
+from model.profile import Profile
 
 
 def authorized_only(handler):
@@ -64,19 +68,41 @@ async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(get_idea())
 
 
+async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    max_all_time = get_max_all_time(user_id=update.effective_user.id)
+    if int(update.message.text) > max_all_time:
+        await update.message.reply_text("Good job!")
+    else:
+        await generate_idea(update=update, context=context)
+
+
+def sync_profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        old_profile = get_profile(user_id=update.effective_user.id)
+        sum_per_day_prev = old_profile.sum_per_day or 0
+    except ProfileNotFound:
+        sum_per_day_prev = 0
+
+    sum_per_day = get_sum_for_today(user_id=update.effective_user.id)
+    max_all_time = get_max_all_time(user_id=update.effective_user.id)
+    profile = Profile(
+        user_id=update.effective_user.id,
+        max_set=max_all_time,
+        sum_per_day=max(sum_per_day, sum_per_day_prev),
+    )
+    update_profile(dict(profile))
+
+
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message.text and is_number(update.message.text):
-        max_all_time = get_max_all_time(user_id=update.effective_user.id)
-        save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
-        await update.message.reply_text(f"Logged {update.message.text} push-ups")
-
-        if int(update.message.text) > max_all_time:
-            await update.message.reply_text("Good job!")
-        else:
-            await generate_idea(update=update, context=context)
-    else:
+    if update.message.text and not is_number(update.message.text):
         await update.message.reply_text("Response is not implemented")
+        return
+
+    await praise(update=update, context=context)
+    save_pushup(value=int(update.message.text), user_id=update.effective_user.id)
+    await update.message.reply_text(f"Logged {update.message.text} push-ups")
+    sync_profile(update=update, context=context)
 
 
 @authorized_only

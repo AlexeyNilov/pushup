@@ -1,4 +1,4 @@
-from model.dataclasses import Profile as DSProfile
+from model.custom_ds import Profile as DSProfile
 from dataclasses import asdict
 
 

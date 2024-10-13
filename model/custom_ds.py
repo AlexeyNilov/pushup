@@ -14,7 +14,7 @@ class Event:
 class Profile:
     user_id: int | None = None
     max_set: int | None = None
-    max_per_day: int | None = None
+    sum_per_day: int | None = None
     goal_set: int | None = None
     goal_per_day: int | None = None
     training_mode: str | None = None

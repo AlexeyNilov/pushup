@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* update profile on event logging
 * /start - start training program
 * /stop - switch to the maintenance mode
 * /join (ask for age, set goal based on the FS)

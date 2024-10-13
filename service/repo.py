@@ -1,6 +1,11 @@
 from data.fastlite_db import DB
 from sqlite_minutils.db import Database
 from datetime import datetime, timezone
+from model.profile import Profile
+
+
+class ProfileNotFound(Exception):
+    pass
 
 
 def get_current_utc_timestamp() -> str:
@@ -55,3 +60,16 @@ def get_average(user_id: int, limit: int = 100, db: Database = DB) -> int:
         return int(round(data[0]["average_value"], 0))
     else:
         return 0
+
+
+def update_profile(profile: dict, db: Database = DB) -> dict:
+    table = db.t.profile
+    return table.upsert(**profile)
+
+
+def get_profile(user_id: int, db: Database = DB) -> Profile:
+    try:
+        data = db.t.profile[user_id]
+    except Exception:
+        raise ProfileNotFound
+    return Profile(**data)

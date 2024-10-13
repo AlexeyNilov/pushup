@@ -1,4 +1,4 @@
-from model.dataclasses import Event as DSEvent
+from model.custom_ds import Event as DSEvent
 from dataclasses import asdict
 
 
