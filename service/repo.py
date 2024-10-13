@@ -101,3 +101,11 @@ def sync_profile(user_id: int, db: Database = DB):
         sum_per_day=max(sum_per_day, sum_per_day_prev),
     )
     update_profile(dict(profile), db)
+
+
+def get_max_sum(user_id: int, db: Database = DB) -> int:
+    try:
+        p = get_profile(user_id, db)
+    except ProfileNotFound:
+        return 0
+    return p.sum_per_day

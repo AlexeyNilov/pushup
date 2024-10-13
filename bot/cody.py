@@ -17,6 +17,7 @@ from service.repo import (
     get_max_all_time,
     sync_profile,
     activate_training,
+    get_max_sum,
 )
 from service.idea import get_idea
 from service.warmup import get_warmup
@@ -57,7 +58,7 @@ async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
     max_all_time = get_max_all_time(user_id=update.effective_user.id)
-    max_sum = 0
+    max_sum = get_max_sum(user_id=update.effective_user.id)
     await update.message.reply_text(
         f"Record set: {max_all_time}, sum per day: {max_sum}"
     )

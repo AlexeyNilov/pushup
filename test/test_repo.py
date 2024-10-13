@@ -77,3 +77,8 @@ def test_sync_profile(empty_db):
     p = repo.get_profile(user_id=1, db=empty_db)
     assert p.max_set == 20
     assert p.sum_per_day == 20
+
+
+def test_get_max_sum(empty_db):
+    repo.update_profile({"user_id": 1, "sum_per_day": 10, "max_set": 5}, db=empty_db)
+    assert repo.get_max_sum(1, empty_db) == 10

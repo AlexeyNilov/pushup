@@ -84,7 +84,7 @@ async def test_parse_message_fail(msg, authorized_update):
 async def test_record(msg, authorized_update):
     context = MagicMock()
     await bot.stats_all_time(authorized_update, context)
-    msg.reply_text.assert_called_once_with("Record set: 0")
+    msg.reply_text.assert_called_once_with("Record set: 0, sum per day: 0")
 
 
 @pytest.mark.asyncio
