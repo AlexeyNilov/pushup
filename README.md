@@ -2,6 +2,9 @@
 
 Your ultimate push-up companion! Log your reps, track progress with detailed stats, get expert workout advice, warm-ups, and stretches, stay motivated with personalized inspiration, and use it as your training journal to crush your goals one push-up at a time!
 
+Status: closed beta
+Link: https://t.me/cody_pushup_bot
+
 ## Main features
 
 * Log Push-Ups & Track Progress: Record your push-ups and receive detailed statistics, including total reps per day, max sets, and personal bests
