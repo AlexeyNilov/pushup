@@ -13,4 +13,5 @@ def get_workout(avg_rep: int = 5, max_rep: int = 10) -> str:
     desc = desc.replace("{avg_rep+1}", str(avg_rep + 1))
     desc = desc.replace("{avg_rep+2}", str(avg_rep + 2))
     desc = desc.replace("{max_rep}", str(max_rep))
+    desc = desc.replace("{max_rep-20%}", str(int(max_rep * 0.8)))
     return f"<i>{key}</i>\n{desc}"

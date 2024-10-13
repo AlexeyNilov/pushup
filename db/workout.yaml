@@ -1,14 +1,14 @@
 Pushup Pyramid: |
-  Start with {start_rep} reps, increase by 2 reps each set until you hit your current max ({max_rep} reps), then descend back down to {start_rep} reps.
+  Start with {start_rep} reps, increase by 2 reps each set until you hit your current max ({max_rep-20%} reps), then descend back down to {start_rep} reps.
   Rest for 45-60 seconds between sets.
 Core and Pushup Supersets: |
   1. Start with pushups - 5 sets of {avg_rep} reps (rest 60 seconds between sets).
   2. Finish with planks - 3 sets, hold for 45 seconds.
 Pushup Variations: |
-  1. Wide Pushups - 4 sets of {avg_rep} reps (works your chest).
-  2. Diamond Pushups - 3 sets of {start_rep} reps (triceps focus).
-  3. Normal Pushups - 3 sets of {max_rep} reps.
   Rest 60 seconds between sets.
+  1. Wide Pushups - 3 sets of {avg_rep} reps (works your chest).
+  2. Diamond Pushups - 2 sets of {start_rep} reps (triceps focus).
+  3. Normal Pushups - 1 set of {max_rep} reps.
 Power Push-Up Tempo: |
   Get into a regular push-up position.
   1. Lower Slowly (4 seconds), count to 4 as you lower your chest towards the floor. Keep the movement controlled and steady.
