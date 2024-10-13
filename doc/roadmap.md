@@ -1,12 +1,11 @@
 # Roadmap and todo
 
-* get workout description
-* get feedback (feelings, state)
+* check stretch strategy
 * update profile on event logging
+* /start - start training program
+* /stop - switch to the maintenance mode
 * /join (ask for age, set goal based on the FS)
 * add health warning on joining
-* /goal https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/conversationbot2.py
-* control rest pattern
 
 ## UI
 
@@ -16,3 +15,12 @@
 ## Infra
 
 * backup sqlite to s3?
+
+## Ideas
+
+* /goal https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/conversationbot2.py
+* control rest pattern
+* get workout description
+* get feedback (feelings, state)
+* congrats on mil standard reach
+* congrats on human stats reach
