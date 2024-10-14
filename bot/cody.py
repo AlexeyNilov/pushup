@@ -95,12 +95,11 @@ async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get("MAX_SET_COLLECTION"):
         max_set = repo.convert_to_int(update.message.text)
         context.user_data["MAX_SET_COLLECTION"] = False
+        context.user_data["NEXT"] = True
         repo.activate_training(user_id=update.effective_user.id, max_set=max_set)
         await update.message.reply_text(
             "Training program activated, call /practice to get recommended workout"
         )
-    else:
-        raise NotMineMessage
 
 
 @authorized_only
@@ -115,6 +114,7 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     )
     await update.message.reply_text(f"Logged {update.message.text} push-ups")
     repo.sync_profile(user_id=update.effective_user.id)
+    context.user_data["NEXT"] = False
 
 
 @authorized_only
@@ -151,6 +151,7 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Clear the age collection state
         context.user_data["AGE_COLLECTION"] = False
+        context.user_data["NEXT"] = True
         await update.message.reply_text("Press /help to see what I can do for you")
     else:
         raise NotMineMessage
