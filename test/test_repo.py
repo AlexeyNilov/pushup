@@ -102,3 +102,11 @@ def test_has_profile(empty_db):
     repo.update_profile({"user_id": 1, "sum_per_day": 10, "max_set": 5}, db=empty_db)
     assert repo.has_profile(1, empty_db) is True
     assert repo.has_profile(2, empty_db) is False
+
+
+def test_deactivate_training(empty_db):
+    repo.activate_training(user_id=1, db=empty_db)
+    repo.deactivate_training(user_id=1, db=empty_db)
+    p = repo.get_profile(user_id=1, db=empty_db)
+    assert p.training_day == 0
+    assert p.training_mode == "Freestyle"

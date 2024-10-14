@@ -120,3 +120,9 @@ async def test_receive_max_set(msg, authorized_update, context):
     msg.reply_text.assert_called_once_with(
         "Training program activated, call /practice to get recommended workout"
     )
+
+
+@pytest.mark.asyncio
+async def test_stop_training_program(msg, authorized_update, context):
+    await bot.stop_training_program(authorized_update, context)
+    msg.reply_text.assert_called_once_with("Training program deactivated")

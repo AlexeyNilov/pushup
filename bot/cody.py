@@ -77,6 +77,12 @@ async def start_training_program(update: Update, context: ContextTypes.DEFAULT_T
 
 
 @authorized_only
+async def stop_training_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    repo.deactivate_training(user_id=update.effective_user.id)
+    await update.message.reply_text("Training program deactivated")
+
+
+@authorized_only
 async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.user_data.get("MAX_SET_COLLECTION"):
         max_set = repo.convert_to_int(update.message.text)

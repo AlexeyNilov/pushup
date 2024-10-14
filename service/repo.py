@@ -90,6 +90,16 @@ def activate_training(user_id: int, max_set: int = 5, db: Database = DB):
     update_profile(dict(profile), db=db)
 
 
+def deactivate_training(user_id: int, db: Database = DB):
+    try:
+        profile = get_profile(user_id=user_id, db=db)
+    except ProfileNotFound:
+        return
+    profile.training_mode = "Freestyle"
+    profile.training_day = 0
+    update_profile(dict(profile), db=db)
+
+
 def sync_profile(user_id: int, db: Database = DB):
     try:
         profile = get_profile(user_id, db)
