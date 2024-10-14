@@ -129,8 +129,8 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def change_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Please tell me your age.")
     context.user_data["AGE_COLLECTION"] = True
+    await update.message.reply_text("Please tell me your age.")
 
 
 @authorized_only
@@ -184,6 +184,9 @@ def main():
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("join", join_command))
     application.add_handler(CommandHandler("age", change_age))
+    application.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)
+    )
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )
