@@ -156,7 +156,7 @@ async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"""
 👋 Greetings, {update.effective_user.full_name}! Let's get you started with this bot. Here's how you can use it:
 
-📌 <b>.Main Feature: Push-ups Logging</b>
+📌 <b>Main Feature: Push-ups Logging</b>
 Simply enter the number of push-ups you've done (e.g., 20), and I'll save it! 📝
 You can check your stats later with:
 - /stats - See today's stats 📊
@@ -181,14 +181,14 @@ Here's how to activate and follow the program:
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
-        "/activate - Activate training program\n"
-        "/age - Change your age\n"
-        "/done - Complete workout\n"
-        "/info - How to use the bot\n"
-        "/help - Show this help message\n"
-        "/practice - Get workout recommendation\n"
-        "/record - Show achievements\n"
-        "/stats - Show today's statistics"
+        "/activate 🎯 - Activate training program\n"
+        "/age 🎂 - Change your age\n"
+        "/done ✅ - Complete workout\n"
+        "/info 💡 - How to use the bot\n"
+        "/help ❓ - Show this help message\n"
+        "/practice 💪 - Get workout recommendation\n"
+        "/record 🏆 - Show achievements\n"
+        "/stats 📊 - Show today's statistics"
     )
     await update.message.reply_text(commands)
 
