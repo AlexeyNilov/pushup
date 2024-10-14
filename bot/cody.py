@@ -132,7 +132,6 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def change_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Please tell me your age.")
     context.user_data["AGE_COLLECTION"] = True
-    await receive_age(update=update, context=context)
 
 
 @authorized_only

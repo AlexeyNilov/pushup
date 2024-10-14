@@ -123,3 +123,11 @@ def convert_to_int(text: str | Any) -> int:
         return int(text)
     else:
         return 0
+
+
+def has_profile(user_id: int, db: Database = DB) -> bool:
+    try:
+        get_profile(user_id, db)
+    except ProfileNotFound:
+        return False
+    return True
