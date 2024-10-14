@@ -2,14 +2,14 @@
 
 Your ultimate push-up companion! Log your reps, track progress with detailed stats, get expert workout advice, warm-ups, and stretches, stay motivated with personalized inspiration, and use it as your training journal to crush your goals one push-up at a time!
 
-* Status: closed beta
+* Status: open beta
 * Link: https://t.me/cody_pushup_bot
 
 ## Main features
 
 * Log Push-Ups & Track Progress: Record your push-ups and receive detailed statistics, including total reps per day, max sets, and personal bests
-* Get AI Advice: Access tailored workouts, warm-ups, and stretches designed to improve your push-up performance
-* Stay Motivated: Receive personalized inspiration and celebrate milestones with congratulatory messages
+* "WIP" Get AI Advice: Access tailored workouts, warm-ups, and stretches designed to improve your push-up performance
+* "WIP" Stay Motivated: Receive personalized inspiration and celebrate milestones with congratulatory messages
 * Track Your Journey: Use the bot as a training journal to document your progress and stay consistent on your fitness journey
 
 ## Why a Telegram Bot is Perfect for Fitness Logging
