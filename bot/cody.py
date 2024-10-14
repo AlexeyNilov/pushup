@@ -110,9 +110,9 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
         "/activate - Activate training program\n"
-        "/practice - Get workout recommendation\n"
         "/done - Complete workout\n"
         "/help - Show this help message\n"
+        "/practice - Get workout recommendation\n"
         "/record - Show achievements\n"
         "/stats - Show today's statistics"
     )

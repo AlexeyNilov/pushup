@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
 from telegram import Update, User, Message
-from bot import simply as bot
+from bot import auth as bot
 
 
 @pytest.fixture

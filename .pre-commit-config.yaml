@@ -15,7 +15,7 @@ repos:
         args: [
             --max-complexity, '5',
             --max-line-length, '128',
-            --ignore, 'E402,F401',
+            --ignore, 'E402,F401,W503',
         ]
 # -   repo: https://github.com/asottile/reorder-python-imports
 #     rev: v3.13.0
