@@ -203,19 +203,21 @@ async def start_private_chat(
 
     context.bot_data.setdefault("user_ids", set()).add(chat.id)
 
-    await update.effective_message.reply_text(
-        f"""Welcome {user_name}! 💪 Before you start using the workout recommendations, please note:
-* This bot is designed to provide general fitness suggestions only.
-* It is not a substitute for professional medical advice, diagnosis, or treatment.
-* Always listen to your body and use common sense when performing exercises.
-* If you have any medical conditions, injuries, or concerns, please consult with a healthcare provider.
-* By using this bot, you agree that you do so at your own risk.
-* The bot is not responsible for any injury or health issues that may arise.
+    await update.effective_message.reply_html(
+        f"""👋 Welcome {user_name}! 💪 Before you start using the workout recommendations, please note:
 
-Stay safe, know your limits, and enjoy your workout! 🏋️‍♂️
+⚠️ <b>Important Information:</b>
+- 🏋️ This bot provides <b>general fitness suggestions only</b>.
+- 🚑 <b>It is not a substitute for professional medical advice, diagnosis, or treatment.</b>
+- 🧠 Always <b>listen to your body</b> and use <b>common sense</b> when exercising.
+- ⚕️ If you have any <b>medical conditions, injuries, or concerns</b>, consult with a healthcare provider.
+- ⚠️ <b>By using this bot, you agree that you do so at your own risk.</b>
+- ❌ The bot <b>is not responsible</b> for any injury or health issues that may arise.
 
-Press /join to start
-        """
+✅ <b>Stay safe, know your limits, and enjoy your workout!</b> 🏋️‍♂️
+
+👉 Press /join to start
+"""
     )
 
 
