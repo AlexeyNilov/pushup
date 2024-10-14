@@ -152,27 +152,27 @@ async def change_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.effective_message.reply_text(
+    await update.effective_message.reply_html(
         f"""
 👋 Greetings, {update.effective_user.full_name}! Let's get you started with this bot. Here's how you can use it:
 
-📌 **Main Feature: Push-ups Logging**
-Simply enter the number of push-ups you've done (e.g., *20*), and I'll save it! 📝
+📌 <b>.Main Feature: Push-ups Logging</b>
+Simply enter the number of push-ups you've done (e.g., 20), and I'll save it! 📝
 You can check your stats later with:
-- `/stats` - See today's stats 📊
-- `/record` - View your all-time best 🏆
+- /stats - See today's stats 📊
+- /record - View your all-time best 🏆
 
-💡 **Need Inspiration?**
-Use `/practice` to receive a **random warm-up, workout, and cooldown** recommendation 🏃‍♂️💪🧘.
+💡 <b>Need Inspiration?</b>
+Use /practice to receive a random warm-up, workout, and cooldown recommendation 🏃‍♂️💪🧘.
 
-🏅 **Prefer a Systematic Training Program?**
+🏅 <b>Prefer a Systematic Training Program?</b>
 Here's how to activate and follow the program:
-1️. **`/activate`** - Start the training program 🎯
-2️. **`/practice`** - Get your current workout 🔄
-3️. **Log your push-ups** by entering the number 💪
-4️. **`/done`** - Mark the workout as complete ✅ (This will move you to the next workout in the sequence)
+1. /activate - Start the training program 🎯
+2. /practice - Get your current workout 🔄
+3. Log your push-ups by entering the number 💪
+4. /done - Mark the workout as complete ✅ (This will move you to the next workout in the sequence)
 
-⚡ **Enjoy your fitness journey and have fun!** 🎉🏋️‍♀️
+⚡ Enjoy your fitness journey and have fun! 🎉🏋️‍♀️
 """
     )
 
