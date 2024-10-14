@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 # Define variables
-s3_bucket = "codify-me-backup "
+s3_bucket = "codify-me-backup"
 sqlite_db_path = "/home/ec2-user/pushup/db/pushup.sqlite"  # Path to your SQLite DB
 backup_dir = "/tmp/"  # Local directory to store temporary backups
 
