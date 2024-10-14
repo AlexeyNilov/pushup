@@ -1,41 +1,39 @@
 """Simple bot to greet users automatically in private chats."""
 
 from conf.settings import BOT_TOKEN_TEST
-from telegram import Update, ChatMember, Chat
+
+from telegram import Chat, Update
 from telegram.ext import (
     Application,
     ContextTypes,
-    ChatMemberHandler,
+    MessageHandler,
+    filters,
 )
 
 
-async def greet_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Greet the user when they start a private chat with the bot."""
-    chat_member = update.my_chat_member
+async def start_private_chat(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> None:
+    """Greets the user and records that they started a chat with the bot if it's a private chat.
+    Since no `my_chat_member` update is issued when a user starts a private chat with the bot
+    for the first time, we have to track it explicitly here.
+    """
+    user_name = update.effective_user.full_name
+    chat = update.effective_chat
+    if chat.type != Chat.PRIVATE or chat.id in context.bot_data.get("user_ids", set()):
+        return
 
-    # Check if the chat is private and the user just started the conversation
-    if (
-        chat_member.chat.type == Chat.PRIVATE
-        and chat_member.new_chat_member.status == ChatMember.MEMBER
-    ):
-        user = chat_member.from_user
-        await context.bot.send_message(
-            chat_id=chat_member.chat.id,
-            text=f"Hello, {user.first_name}! 👋\nWelcome to the bot.",
-        )
+    print("%s started a private chat with the bot", user_name)
+    context.bot_data.setdefault("user_ids", set()).add(chat.id)
 
-
-def main():
-    """Main function to run the bot."""
-    # Initialize the bot application
-    application = Application.builder().token(BOT_TOKEN_TEST).build()
-
-    # Add handlers for chat members and messages
-    application.add_handler(
-        ChatMemberHandler(greet_user, ChatMemberHandler.MY_CHAT_MEMBER)
+    await update.effective_message.reply_text(
+        f"Welcome {user_name}. Use /join to start"
     )
 
-    # Start polling for updates
+
+def main() -> None:
+    application = Application.builder().token(BOT_TOKEN_TEST).build()
+    application.add_handler(MessageHandler(filters.ALL, start_private_chat))
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
