@@ -84,6 +84,7 @@ async def stop_training_program(update: Update, context: ContextTypes.DEFAULT_TY
 
 @authorized_only
 async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print(receive_max_set)
     if context.user_data.get("MAX_SET_COLLECTION"):
         max_set = repo.convert_to_int(update.message.text)
         context.user_data["MAX_SET_COLLECTION"] = False
@@ -95,6 +96,7 @@ async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    print(parse_message)
     if update.message.text and not repo.is_number(update.message.text):
         await update.message.reply_text("Response is not implemented")
         return
@@ -131,6 +133,7 @@ async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
+    print(receive_age)
     # Check if we are expecting an age response
     if context.user_data.get("AGE_COLLECTION"):
         age = repo.convert_to_int(update.message.text)  # Get the user's response

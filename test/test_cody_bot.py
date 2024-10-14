@@ -79,6 +79,14 @@ async def test_parse_message(msg, authorized_update, context):
 
 
 @pytest.mark.asyncio
+async def test_parse_message_race(msg, authorized_update, context):
+    authorized_update.message.text = "10"
+    await bot.receive_max_set(authorized_update, context)
+    await bot.parse_message(authorized_update, context)
+    msg.reply_text.assert_any_call("Logged 10 push-ups")
+
+
+@pytest.mark.asyncio
 async def test_parse_message_fail(msg, authorized_update, context):
     authorized_update.message.text = "test"
     await bot.parse_message(authorized_update, context)
