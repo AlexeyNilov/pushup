@@ -49,6 +49,7 @@ def main() -> None:
     application = Application.builder().token(BOT_TOKEN_TEST).build()
     application.add_handler(CommandHandler("join", join_command))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+
     application.add_handler(MessageHandler(filters.ALL, start_private_chat))
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
