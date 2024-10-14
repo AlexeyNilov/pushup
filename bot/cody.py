@@ -203,6 +203,11 @@ Press /join to start
     )
 
 
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Global error handler to catch exceptions."""
+    pass
+
+
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("done", complete_workout))
@@ -225,6 +230,7 @@ def main():
 
     application.add_handler(MessageHandler(filters.ALL, start_private_chat))
 
+    application.add_error_handler(error_handler)
     # Start the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
