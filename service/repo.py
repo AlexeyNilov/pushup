@@ -82,7 +82,7 @@ def activate_training(user_id: int, max_set: int = 5, db: Database = DB):
     except ProfileNotFound:
         profile = Profile(user_id=user_id)
 
-    if max_set < 10:
+    if max_set < 3:
         profile.training_mode = "Beginner"
     else:
         profile.training_mode = "Intermediate"
