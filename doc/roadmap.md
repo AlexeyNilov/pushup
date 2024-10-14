@@ -1,9 +1,7 @@
 # Roadmap and todo
 
-* /deactivate - switch to the freestyle mode
-* 1st intro message
-* add health warning on joining
 * /join (ask for age, max pushups, set goal based on the FS)
+* /deactivate - switch to the freestyle mode
 * /explain get warmup/cooldown description
 
 ## UI
