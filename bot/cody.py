@@ -21,10 +21,6 @@ from data.logger import set_logging
 set_logging()
 
 
-class NotMineMessage(Exception):
-    pass
-
-
 def authorized_only(handler):
     """Decorator to restrict command handlers to authorized users only."""
 
@@ -133,30 +129,25 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     repo.sync_profile(user_id=update.effective_user.id)
     await update.message.reply_text("Hello! Please tell me your age.")
-    context.user_data["AGE_COLLECTION"] = True
+    return "ask_age"
 
 
 @authorized_only
 async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
-    if context.user_data.get("AGE_COLLECTION"):
-        age = repo.convert_to_int(update.message.text)  # Get the user's response
-        await update.message.reply_text(f"Thank you! Your age is {age}.")
-        profile = repo.get_profile(user_id=update.effective_user.id)
-        profile.age = age
-        repo.update_profile(dict(profile))
-
-        # Clear the age collection state
-        context.user_data["AGE_COLLECTION"] = False
-        await update.message.reply_text("Press /help to see what I can do for you")
-    else:
-        raise NotMineMessage
+    age = repo.convert_to_int(update.message.text)  # Get the user's response
+    await update.message.reply_text(f"Thank you! Your age is {age}.")
+    profile = repo.get_profile(user_id=update.effective_user.id)
+    profile.age = age
+    repo.update_profile(dict(profile))
+    await update.message.reply_text("Press /help to see what I can do for you")
+    return ConversationHandler.END
 
 
 @authorized_only
 async def change_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["AGE_COLLECTION"] = True
     await update.message.reply_text("Please tell me your age.")
+    return "ask_age"
 
 
 @authorized_only
@@ -214,6 +205,14 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
 
+    join_handler = ConversationHandler(
+        entry_points=[CommandHandler("join", join_command)],
+        states={
+            "ask_age": [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel)],  # Handle cancellations
+    )
+
     activate_handler = ConversationHandler(
         entry_points=[CommandHandler("activate", start_training_program)],
         states={
@@ -223,25 +222,29 @@ def main():
         },
         fallbacks=[CommandHandler("cancel", cancel)],  # Handle cancellations
     )
+
+    change_age_handler = ConversationHandler(
+        entry_points=[CommandHandler("age", change_age)],
+        states={
+            "ask_age": [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel)],  # Handle cancellations
+    )
+
+    application.add_handler(join_handler)
     application.add_handler(activate_handler)
+    application.add_handler(change_age_handler)
     application.add_handler(CommandHandler("done", complete_workout))
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("help", help_command))
-    application.add_handler(CommandHandler("join", join_command))
-    application.add_handler(CommandHandler("age", change_age))
-
-    # application.add_handler(
-    #     MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)
-    # )
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )
-
     application.add_handler(MessageHandler(filters.ALL, start_private_chat))
-
     application.add_error_handler(error_handler)
+
     # Start the bot
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
