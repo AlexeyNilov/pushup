@@ -1,7 +1,6 @@
 from conf.settings import BOT_TOKEN
 from functools import wraps
 import random
-import logging
 from telegram import Chat, Update
 from telegram.ext import (
     Application,
@@ -9,6 +8,7 @@ from telegram.ext import (
     ContextTypes,
     MessageHandler,
     filters,
+    ConversationHandler,
 )
 from service import repo
 from service.idea import get_idea
@@ -82,7 +82,17 @@ async def start_training_program(update: Update, context: ContextTypes.DEFAULT_T
     await update.message.reply_text(
         "Please tell me how much push-ups you can do in one go?"
     )
-    context.user_data["MAX_SET_COLLECTION"] = True
+    return "ask_max_set"
+
+
+@authorized_only
+async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    max_set = repo.convert_to_int(update.message.text)
+    repo.activate_training(user_id=update.effective_user.id, max_set=max_set)
+    await update.message.reply_text(
+        "Training program activated, call /practice to get recommended workout"
+    )
+    return ConversationHandler.END
 
 
 @authorized_only
@@ -92,21 +102,7 @@ async def stop_training_program(update: Update, context: ContextTypes.DEFAULT_TY
 
 
 @authorized_only
-async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.error(str(context.user_data))
-    if context.user_data.get("MAX_SET_COLLECTION"):
-        max_set = repo.convert_to_int(update.message.text)
-        context.user_data["MAX_SET_COLLECTION"] = False
-        context.user_data["NEXT"] = True
-        repo.activate_training(user_id=update.effective_user.id, max_set=max_set)
-        await update.message.reply_text(
-            "Training program activated, call /practice to get recommended workout"
-        )
-
-
-@authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    logging.error(str(context.user_data))
     if update.message.text and not repo.is_number(update.message.text):
         await update.message.reply_text("Response is not implemented")
         return
@@ -117,7 +113,6 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
     )
     await update.message.reply_text(f"Logged {update.message.text} push-ups")
     repo.sync_profile(user_id=update.effective_user.id)
-    context.user_data["NEXT"] = False
 
 
 @authorized_only
@@ -144,7 +139,6 @@ async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
-    logging.error(str(context.user_data))
     if context.user_data.get("AGE_COLLECTION"):
         age = repo.convert_to_int(update.message.text)  # Get the user's response
         await update.message.reply_text(f"Thank you! Your age is {age}.")
@@ -154,7 +148,6 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Clear the age collection state
         context.user_data["AGE_COLLECTION"] = False
-        context.user_data["NEXT"] = True
         await update.message.reply_text("Press /help to see what I can do for you")
     else:
         raise NotMineMessage
@@ -207,6 +200,12 @@ Press /join to start
     )
 
 
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Handles the cancellation of the conversation."""
+    await update.message.reply_text("Okay, conversation cancelled.")
+    return ConversationHandler.END  # End the conversation
+
+
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Global error handler to catch exceptions."""
     pass
@@ -214,20 +213,28 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
 
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
+
+    activate_handler = ConversationHandler(
+        entry_points=[CommandHandler("activate", start_training_program)],
+        states={
+            "ask_max_set": [
+                MessageHandler(filters.TEXT & ~filters.COMMAND, receive_max_set)
+            ],
+        },
+        fallbacks=[CommandHandler("cancel", cancel)],  # Handle cancellations
+    )
+    application.add_handler(activate_handler)
     application.add_handler(CommandHandler("done", complete_workout))
-    application.add_handler(CommandHandler("activate", start_training_program))
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("join", join_command))
     application.add_handler(CommandHandler("age", change_age))
-    application.add_handler(
-        MessageHandler(filters.TEXT & ~filters.COMMAND, receive_max_set)
-    )
-    application.add_handler(
-        MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)
-    )
+
+    # application.add_handler(
+    #     MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)
+    # )
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )
