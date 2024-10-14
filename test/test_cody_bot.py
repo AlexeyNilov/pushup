@@ -8,6 +8,7 @@ os.environ["PUSHUP_DB_PATH"] = "db/test_empty.sqlite"
 
 from bot import cody as bot
 from data.fastlite_db import recreate_db
+from service.repo import update_profile
 
 
 @pytest.fixture
@@ -30,6 +31,7 @@ def msg() -> MagicMock:
 @pytest.fixture
 def authorized_update(authorized_user, msg) -> MagicMock:
     recreate_db()
+    update_profile({"user_id": 123456789})
     upd = MagicMock(spec=Update)
     upd.effective_user = authorized_user
     upd.message = msg
@@ -61,7 +63,7 @@ async def test_stats_command(msg, authorized_update, context):
 async def test_stats_command_fail(msg, illegal_update, context):
     await bot.stats_for_today(illegal_update, context)
     msg.reply_text.assert_called_once_with(
-        "Sorry, you are not authorized to use this bot."
+        "Sorry, you are not authorized to use this bot, /join first"
     )
 
 

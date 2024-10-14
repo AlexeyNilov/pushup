@@ -1,4 +1,4 @@
-from conf.settings import BOT_TOKEN, AUTHORIZED_IDS
+from conf.settings import BOT_TOKEN
 from functools import wraps
 import random
 from telegram import Chat, Update
@@ -29,12 +29,11 @@ def authorized_only(handler):
             await update.message.reply_text("Please use private chat.")
             return
 
-        user_id = update.effective_user.id
-        if user_id in AUTHORIZED_IDS:
+        if repo.has_profile(update.effective_user.id):
             return await handler(update, context, *args, **kwargs)
         else:
             await update.message.reply_text(
-                "Sorry, you are not authorized to use this bot."
+                "Sorry, you are not authorized to use this bot, /join first"
             )
 
     return wrapper
