@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* rename advice to workout/practice
 * /deactivate - switch to the freestyle mode
 * 1st intro message
 * /join (ask for age, max pushups, set goal based on the FS)

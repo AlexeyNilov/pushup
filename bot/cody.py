@@ -91,7 +91,7 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 
 @authorized_only
-async def get_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def get_practice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
     await update.message.reply_html(
         f"<b>Workout</b>:\n{get_workout(user_id=update.effective_user.id)}"
@@ -110,7 +110,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
         "/activate - Activate training program\n"
-        "/advice - Get workout advice\n"
+        "/practice - Get workout recommendation\n"
         "/done - Complete workout\n"
         "/help - Show this help message\n"
         "/record - Show your records\n"
@@ -125,7 +125,7 @@ def main():
     application.add_handler(CommandHandler("activate", start_training_program))
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("record", stats_all_time))
-    application.add_handler(CommandHandler("advice", get_advice))
+    application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)

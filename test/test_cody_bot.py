@@ -88,8 +88,8 @@ async def test_record(msg, authorized_update, context):
 
 
 @pytest.mark.asyncio
-async def test_get_advice(msg, authorized_update, context):
-    await bot.get_advice(authorized_update, context)
+async def test_get_practice(msg, authorized_update, context):
+    await bot.get_practice(authorized_update, context)
     msg.reply_html.assert_called()
     # msg.reply_html.assert_any_call("")
 
