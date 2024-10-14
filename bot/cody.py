@@ -106,6 +106,10 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Workout completed!")
 
 
+async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    pass
+
+
 @authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
@@ -120,6 +124,32 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(commands)
 
 
+async def start_private_chat(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> None:
+    user_name = update.effective_user.full_name
+    chat = update.effective_chat
+    if chat.type != Chat.PRIVATE or chat.id in context.bot_data.get("user_ids", set()):
+        return
+
+    context.bot_data.setdefault("user_ids", set()).add(chat.id)
+
+    await update.effective_message.reply_text(
+        f"""Welcome {user_name}! 💪 Before you start using the workout recommendations, please note:\n
+* This bot is designed to provide general fitness suggestions only.\n
+* It is not a substitute for professional medical advice, diagnosis, or treatment.\n
+* Always listen to your body and use common sense when performing exercises.\n
+* If you have any medical conditions, injuries, or concerns, please consult with a healthcare provider.\n
+* By using this bot, you agree that you do so at your own risk.
+* The bot is not responsible for any injury or health issues that may arise.
+
+Stay safe, know your limits, and enjoy your workout! 🏋️‍♂️
+
+Press /join to start
+        """
+    )
+
+
 def main():
     application = Application.builder().token(BOT_TOKEN).build()
     application.add_handler(CommandHandler("done", complete_workout))
@@ -128,6 +158,8 @@ def main():
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("join", join_command))
+    application.add_handler(MessageHandler(filters.ALL, start_private_chat))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )

@@ -27,7 +27,18 @@ async def start_private_chat(
     context.bot_data.setdefault("user_ids", set()).add(chat.id)
 
     await update.effective_message.reply_text(
-        f"Welcome {user_name}. Use /join to start"
+        f"""Welcome {user_name}! 💪 Before you start using the workout recommendations, please note:\n
+* This bot is designed to provide general fitness suggestions only.\n
+* It is not a substitute for professional medical advice, diagnosis, or treatment.\n
+* Always listen to your body and use common sense when performing exercises.\n
+* If you have any medical conditions, injuries, or concerns, please consult with a healthcare provider.\n
+* By using this bot, you agree that you do so at your own risk.
+* The bot is not responsible for any injury or health issues that may arise.
+
+Stay safe, know your limits, and enjoy your workout! 🏋️‍♂️
+
+Press /join to start
+        """
     )
 
 
