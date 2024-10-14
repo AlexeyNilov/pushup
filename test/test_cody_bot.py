@@ -110,3 +110,13 @@ async def test_start_training_program(msg, authorized_update, context):
 async def test_complete_workout(msg, authorized_update, context):
     await bot.complete_workout(authorized_update, context)
     msg.reply_text.assert_called_once_with("Workout completed!")
+
+
+@pytest.mark.asyncio
+async def test_receive_max_set(msg, authorized_update, context):
+    context.user_data["MAX_SET_COLLECTION"] = True
+    authorized_update.message.text = "10"
+    await bot.receive_max_set(authorized_update, context)
+    msg.reply_text.assert_called_once_with(
+        "Training program activated, call /practice to get recommended workout"
+    )
