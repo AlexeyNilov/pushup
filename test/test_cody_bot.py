@@ -102,7 +102,7 @@ async def test_get_practice(msg, authorized_update, context):
 async def test_start_training_program(msg, authorized_update, context):
     await bot.start_training_program(authorized_update, context)
     msg.reply_text.assert_called_once_with(
-        "Training program activated, call /advice to get recommended workout"
+        "Please tell me how much push-ups you can do in one go?"
     )
 
 

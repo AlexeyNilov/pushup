@@ -70,10 +70,21 @@ async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def start_training_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    repo.activate_training(user_id=update.effective_user.id)
     await update.message.reply_text(
-        "Training program activated, call /advice to get recommended workout"
+        "Please tell me how much push-ups you can do in one go?"
     )
+    context.user_data["MAX_SET_COLLECTION"] = True
+
+
+@authorized_only
+async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if context.user_data.get("MAX_SET_COLLECTION"):
+        max_set = repo.convert_to_int(update.message.text)
+        context.user_data["MAX_SET_COLLECTION"] = False
+        repo.activate_training(user_id=update.effective_user.id, max_set=max_set)
+        await update.message.reply_text(
+            "Training program activated, call /practice to get recommended workout"
+        )
 
 
 @authorized_only
@@ -108,10 +119,10 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     repo.sync_profile(user_id=update.effective_user.id)
     await update.message.reply_text("Hello! Please tell me your age.")
-    # Set the state to wait for the user's age response
     context.user_data["AGE_COLLECTION"] = True
 
 
+@authorized_only
 async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
     # Check if we are expecting an age response
@@ -184,6 +195,9 @@ def main():
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("join", join_command))
     application.add_handler(CommandHandler("age", change_age))
+    application.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, receive_max_set)
+    )
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)
     )
