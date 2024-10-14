@@ -113,7 +113,7 @@ async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["AGE_COLLECTION"] = True
 
 
-async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
     # Check if we are expecting an age response
     if context.user_data.get("AGE_COLLECTION"):
@@ -129,10 +129,18 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
 
 @authorized_only
+async def change_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Please tell me your age.")
+    context.user_data["AGE_COLLECTION"] = True
+    await receive_age(update=update, context=context)
+
+
+@authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
         "/activate - Activate training program\n"
+        "/age - Change your age\n"
         "/done - Complete workout\n"
         "/help - Show this help message\n"
         "/practice - Get workout recommendation\n"
@@ -177,6 +185,7 @@ def main():
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("join", join_command))
+    application.add_handler(CommandHandler("age", change_age))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )
