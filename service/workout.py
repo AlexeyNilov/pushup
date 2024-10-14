@@ -6,11 +6,15 @@ from data.fastlite_db import DB
 
 
 WORKOUTS = load_yaml("db/workout.yaml")
-PROGRAM = load_yaml("db/program.yaml")
+INTERMEDIATE_PROGRAM = load_yaml("db/intermediate.yaml")
+BEGINNER_PROGRAM = load_yaml("db/beginner.yaml")
 
 
-def get_program() -> list:
-    return PROGRAM["Program"]
+def get_program(level: str = "intermediate") -> list:
+    if level == "intermediate":
+        return INTERMEDIATE_PROGRAM["Program"]
+    elif level == "beginner":
+        return BEGINNER_PROGRAM["Program"]
 
 
 def get_workout(user_id: int, db: Database = DB) -> str:
@@ -30,6 +34,7 @@ def get_workout(user_id: int, db: Database = DB) -> str:
     desc = desc.replace("{avg_rep}", str(avg_rep))
     desc = desc.replace("{avg_rep+1}", str(avg_rep + 1))
     desc = desc.replace("{avg_rep+2}", str(avg_rep + 2))
+    desc = desc.replace("{avg_rep+3}", str(avg_rep + 3))
     desc = desc.replace("{max_rep}", str(max_rep))
     desc = desc.replace("{max_rep-20%}", str(int(max_rep * 0.8)))
     desc = desc.replace("{max_rep-30%}", str(int(max_rep * 0.7)))

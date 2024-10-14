@@ -1,3 +1,35 @@
+# Beginner level workouts
+Wall push-ups: |
+  Rest 60 seconds between each set
+  1. {avg_rep} wall push-ups
+  2. {avg_rep+3} wall push-ups
+  3. {avg_rep} wall push-ups
+  4. {avg_rep} wall push-ups
+  5. {avg_rep+2}+ wall push-ups
+Table push-ups: |
+  Rest 60 seconds between each set
+  1. {avg_rep} table push-ups
+  2. {avg_rep+3} table push-ups
+  3. {avg_rep} table push-ups
+  4. {avg_rep} table push-ups
+  5. {avg_rep+2}+ table push-ups
+Chair push-ups: |
+  Rest 60 seconds between each set
+  1. {avg_rep} chair push-ups
+  2. {avg_rep+3} chair push-ups
+  3. {avg_rep} chair push-ups
+  4. {avg_rep} chair push-ups
+  5. {avg_rep+2}+ chair push-ups
+Knee push-ups: |
+  Rest 60 seconds between each set
+  1. {avg_rep} knee push-ups
+  2. {avg_rep+3} knee push-ups
+  3. {avg_rep} knee push-ups
+  4. {avg_rep} knee push-ups
+  5. {avg_rep+2}+ knee push-ups
+Rest: Just rest
+Pushup Test: Test how many push-ups you can do in one go. Keep correct form!
+# Intermediate level workouts
 Pushup Pyramid: |
   Start with {start_rep} reps, increase by 2 reps each set until you hit {max_rep-20%} reps, then descend back down to {start_rep} reps.
   Rest for 45-60 seconds between sets.

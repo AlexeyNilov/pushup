@@ -1,7 +1,10 @@
 # Roadmap and todo
 
+* default avg
+* rename advice to workout/practice
 * /deactivate - switch to the freestyle mode
-* /join (ask for age, set goal based on the FS)
+* 1st intro message
+* /join (ask for age, max pushups, set goal based on the FS)
 * add health warning on joining
 * /explain get warmup/cooldown description
 
