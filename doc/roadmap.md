@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* answer in private chats only
 * /deactivate - switch to the freestyle mode
 * 1st intro message
 * add health warning on joining

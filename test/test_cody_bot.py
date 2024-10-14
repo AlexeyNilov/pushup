@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import AsyncMock, MagicMock
-from telegram import Update, User, Message
+from telegram import Update, User, Message, Chat
 
 import os
 
@@ -33,6 +33,7 @@ def authorized_update(authorized_user, msg) -> MagicMock:
     upd = MagicMock(spec=Update)
     upd.effective_user = authorized_user
     upd.message = msg
+    upd.effective_chat.type = Chat.PRIVATE
     return upd
 
 
@@ -41,6 +42,7 @@ def illegal_update(illegal_user, msg) -> MagicMock:
     upd = MagicMock(spec=Update)
     upd.effective_user = illegal_user
     upd.message = msg
+    upd.effective_chat.type = Chat.PRIVATE
     return upd
 
 

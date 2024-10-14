@@ -1,7 +1,7 @@
 from conf.settings import BOT_TOKEN, AUTHORIZED_IDS
 from functools import wraps
 import random
-from telegram import Update
+from telegram import Chat, Update
 from telegram.ext import (
     Application,
     CommandHandler,
@@ -23,10 +23,11 @@ def authorized_only(handler):
     async def wrapper(
         update: Update, context: ContextTypes.DEFAULT_TYPE, *args, **kwargs
     ):
-        if update.effective_user is None:
-            raise ValueError("No user found in the update.")
-        if update.message is None:
-            raise ValueError("No message found in the update")
+
+        chat = update.effective_chat
+        if chat.type != Chat.PRIVATE:
+            await update.message.reply_text("Please use private chat.")
+            return
 
         user_id = update.effective_user.id
         if user_id in AUTHORIZED_IDS:

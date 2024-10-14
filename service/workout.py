@@ -11,10 +11,9 @@ BEGINNER_PROGRAM = load_yaml("db/beginner.yaml")
 
 
 def get_program(level: str = "intermediate") -> list:
-    if level == "intermediate":
-        return INTERMEDIATE_PROGRAM["Program"]
-    elif level == "beginner":
+    if level == "beginner":
         return BEGINNER_PROGRAM["Program"]
+    return INTERMEDIATE_PROGRAM["Program"]
 
 
 def get_workout(user_id: int, db: Database = DB) -> str:
