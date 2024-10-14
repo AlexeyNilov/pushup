@@ -140,7 +140,7 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     profile = repo.get_profile(user_id=update.effective_user.id)
     profile.age = age
     repo.update_profile(dict(profile))
-    await update.message.reply_text("Press /help to see what I can do for you")
+    await update.message.reply_text("Press /info to see what I can do for you")
     return ConversationHandler.END
 
 
@@ -151,12 +151,40 @@ async def change_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 @authorized_only
+async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.effective_message.reply_text(
+        f"""
+👋 Greetings, {update.effective_user.full_name}! Let's get you started with this bot. Here's how you can use it:
+
+📌 **Main Feature: Push-ups Logging**
+Simply enter the number of push-ups you've done (e.g., *20*), and I'll save it! 📝
+You can check your stats later with:
+- `/stats` - See today's stats 📊
+- `/record` - View your all-time best 🏆
+
+💡 **Need Inspiration?**
+Use `/practice` to receive a **random warm-up, workout, and cooldown** recommendation 🏃‍♂️💪🧘.
+
+🏅 **Prefer a Systematic Training Program?**
+Here's how to activate and follow the program:
+1️. **`/activate`** - Start the training program 🎯
+2️. **`/practice`** - Get your current workout 🔄
+3️. **Log your push-ups** by entering the number 💪
+4️. **`/done`** - Mark the workout as complete ✅ (This will move you to the next workout in the sequence)
+
+⚡ **Enjoy your fitness journey and have fun!** 🎉🏋️‍♀️
+"""
+    )
+
+
+@authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user."""
     commands = (
         "/activate - Activate training program\n"
         "/age - Change your age\n"
         "/done - Complete workout\n"
+        "/info - How to use the bot\n"
         "/help - Show this help message\n"
         "/practice - Get workout recommendation\n"
         "/record - Show achievements\n"
@@ -236,6 +264,7 @@ def main():
     application.add_handler(change_age_handler)
     application.add_handler(CommandHandler("done", complete_workout))
     application.add_handler(CommandHandler("stats", stats_for_today))
+    application.add_handler(CommandHandler("info", info_command))
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("help", help_command))
