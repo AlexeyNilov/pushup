@@ -113,7 +113,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/practice - Get workout recommendation\n"
         "/done - Complete workout\n"
         "/help - Show this help message\n"
-        "/record - Show your records\n"
+        "/record - Show achievements\n"
         "/stats - Show today's statistics"
     )
     await update.message.reply_text(commands)
