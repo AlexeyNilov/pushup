@@ -107,7 +107,25 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    pass
+    repo.sync_profile(user_id=update.effective_user.id)
+    await update.message.reply_text("Hello! Please tell me your age.")
+    # Set the state to wait for the user's age response
+    context.user_data["AGE_COLLECTION"] = True
+
+
+async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Handler to receive the user's age and respond back."""
+    # Check if we are expecting an age response
+    if context.user_data.get("AGE_COLLECTION"):
+        age = repo.convert_to_int(update.message.text)  # Get the user's response
+        await update.message.reply_text(f"Thank you! Your age is {age}.")
+        profile = repo.get_profile(user_id=update.effective_user.id)
+        profile.age = age
+        repo.update_profile(dict(profile))
+
+        # Clear the age collection state
+        context.user_data["AGE_COLLECTION"] = False
+        await update.message.reply_text("Press /help to see what I can do for you")
 
 
 @authorized_only

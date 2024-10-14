@@ -13,9 +13,21 @@ from telegram.ext import (
 
 
 async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print("join_command")
-    if update.message:
-        await update.message.reply_text("Start joining")
+    await update.message.reply_text("Hello! Please tell me your age.")
+    # Set the state to wait for the user's age response
+    context.user_data["AGE_COLLECTION"] = True
+
+
+async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Handler to receive the user's age and respond back."""
+    # Check if we are expecting an age response
+    if context.user_data.get("AGE_COLLECTION"):
+        age = int(update.message.text)  # Get the user's response
+        await update.message.reply_text(f"Thank you! Your age is {age}.")
+
+        # Clear the age collection state
+        context.user_data["AGE_COLLECTION"] = False
+        await update.message.reply_text("Press /help to see what I can do for you")
 
 
 async def start_private_chat(
@@ -39,16 +51,12 @@ async def start_private_chat(
     )
 
 
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    print("echo")
-    if update.message:
-        await update.message.reply_text(f"{update.message.text}")
-
-
 def main() -> None:
     application = Application.builder().token(BOT_TOKEN_TEST).build()
     application.add_handler(CommandHandler("join", join_command))
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+    application.add_handler(
+        MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)
+    )
 
     application.add_handler(MessageHandler(filters.ALL, start_private_chat))
     application.run_polling(allowed_updates=Update.ALL_TYPES)

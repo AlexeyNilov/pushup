@@ -1,6 +1,6 @@
 # Roadmap and todo
 
-* /join (ask for age, max pushups, set goal based on the FS)
+* /activate - chose program
 * /deactivate - switch to the freestyle mode
 * /explain get warmup/cooldown description
 
