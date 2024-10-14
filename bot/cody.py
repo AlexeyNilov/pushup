@@ -2,6 +2,7 @@ from conf.settings import BOT_TOKEN
 from functools import wraps
 import random
 import logging
+from asyncio import sleep
 from telegram import Chat, Update
 from telegram.ext import (
     Application,
@@ -97,6 +98,8 @@ async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             "Training program activated, call /practice to get recommended workout"
         )
+    else:
+        await sleep(0)
 
 
 @authorized_only
@@ -150,6 +153,8 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # Clear the age collection state
         context.user_data["AGE_COLLECTION"] = False
         await update.message.reply_text("Press /help to see what I can do for you")
+    else:
+        await sleep(0)
 
 
 @authorized_only

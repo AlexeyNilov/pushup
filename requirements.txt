@@ -2,3 +2,4 @@ pydantic
 fastlite
 python-telegram-bot
 pyyaml
+asyncio
