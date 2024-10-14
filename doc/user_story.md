@@ -1,6 +1,7 @@
 # User story
 
 * /explain get warmup/cooldown description
+* error reporting
 
 ## UI
 
