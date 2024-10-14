@@ -1,6 +1,5 @@
 # Roadmap and todo
 
-* default avg
 * rename advice to workout/practice
 * /deactivate - switch to the freestyle mode
 * 1st intro message
