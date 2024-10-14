@@ -1,6 +1,7 @@
 from conf.settings import BOT_TOKEN
 from functools import wraps
 import random
+import logging
 from telegram import Chat, Update
 from telegram.ext import (
     Application,
@@ -14,6 +15,10 @@ from service.idea import get_idea
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
 from service.workout import get_workout
+from data.logger import set_logging
+
+
+set_logging()
 
 
 def authorized_only(handler):
@@ -84,7 +89,7 @@ async def stop_training_program(update: Update, context: ContextTypes.DEFAULT_TY
 
 @authorized_only
 async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print("receive_max_set")
+    logging.warning("receive_max_set")
     if context.user_data.get("MAX_SET_COLLECTION"):
         max_set = repo.convert_to_int(update.message.text)
         context.user_data["MAX_SET_COLLECTION"] = False
@@ -96,7 +101,7 @@ async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    print("parse_message")
+    logging.warning("parse_message")
     if update.message.text and not repo.is_number(update.message.text):
         await update.message.reply_text("Response is not implemented")
         return
@@ -133,7 +138,7 @@ async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
-    print("receive_age")
+    logging.warning("receive_age")
     # Check if we are expecting an age response
     if context.user_data.get("AGE_COLLECTION"):
         age = repo.convert_to_int(update.message.text)  # Get the user's response
