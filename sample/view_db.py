@@ -16,4 +16,3 @@ print(hl_md(t.schema, "sql"))
 
 for p in DB.t.profile():
     print(p)
-    break
