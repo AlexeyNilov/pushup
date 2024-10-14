@@ -67,7 +67,7 @@ def test_activate_training(empty_db):
     repo.activate_training(user_id=1, db=empty_db)
     p = repo.get_profile(user_id=1, db=empty_db)
     assert p.training_day == 0
-    assert p.training_mode == "Program"
+    assert p.training_mode == "Beginner"
 
 
 def test_sync_profile(empty_db):

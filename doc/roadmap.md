@@ -1,8 +1,7 @@
 # Roadmap and todo
 
-* /max
 * /activate - chose program
-* improve help (add about push-up logging and general flow of work)
+* /info explain about push-up logging and general flow of work
 * /deactivate - switch to the freestyle mode
 * /explain get warmup/cooldown description
 

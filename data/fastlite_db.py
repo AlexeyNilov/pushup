@@ -24,7 +24,7 @@ profile_structure = dict(
     sum_per_day=int,
     goal_set=int,
     goal_per_day=int,
-    training_mode=str,  # Freestyle, Program, Maintenance
+    training_mode=str,  # Freestyle, Beginner, Intermediate
     training_day=int,
     age=int,
 )

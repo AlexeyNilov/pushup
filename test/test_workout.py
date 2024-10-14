@@ -20,7 +20,7 @@ def test_get_workout():
 
 
 def test_get_workout_for_program(empty_db):
-    repo.activate_training(user_id=1, db=empty_db)
+    repo.activate_training(user_id=1, db=empty_db, max_set=20)
     assert "Power Push-Up Tempo" in get_workout(1, db=empty_db)
 
 

@@ -20,8 +20,10 @@ def get_workout(user_id: int, db: Database = DB) -> str:
     key = random.choice(list(WORKOUTS.keys()))
     try:
         profile = get_profile(user_id, db=db)
-        if profile.training_mode == "Program":
-            key = get_program()[profile.training_day or 0]
+        if profile.training_mode == "Beginner":
+            key = get_program(level="beginner")[profile.training_day or 0]
+        elif profile.training_mode == "Intermediate":
+            key = get_program(level="intermediate")[profile.training_day or 0]
     except ProfileNotFound:
         pass
 
