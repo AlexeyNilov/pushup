@@ -67,7 +67,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     commands = [
         ["/practice", "/done"],
         ["/stats", "/record"],
-        ["/set"],
+        ["/set", "/help"],
     ]
 
     keyboard = ReplyKeyboardMarkup(commands, resize_keyboard=True, is_persistent=True)
