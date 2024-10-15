@@ -2,6 +2,7 @@
 This module contains command handlers for the bot.
 """
 
+import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes, CallbackContext
 from bot.common import authorized_only
@@ -128,7 +129,8 @@ async def button_callback(update: Update, context: CallbackContext):
 
     handler = command_map.get(query.data)
     if handler:
-        update.message = query.message
+        # update.message = query.message
+        logging.error(str(update.message))
         await handler(update, context)
     else:
         await query.message.reply_text("Unknown command")
