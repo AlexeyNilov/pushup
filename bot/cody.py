@@ -113,11 +113,15 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
 @authorized_only
 async def get_practice(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
-    await update.message.reply_html(
-        f"<b>Workout</b>:\n{get_workout(user_id=update.effective_user.id)}"
-    )
-    await update.message.reply_html(f"<b>Cool down</b>:\n{get_cool_down()}")
+    user_id = update.effective_user.id
+    workout = get_workout(user_id=user_id)
+
+    if "rest" in workout.lower():
+        await update.message.reply_html(f"<b>Today's Practice</b>:\n{workout}")
+    else:
+        await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
+        await update.message.reply_html(f"<b>Workout</b>:\n{workout}")
+        await update.message.reply_html(f"<b>Cool down</b>:\n{get_cool_down()}")
 
 
 @authorized_only
