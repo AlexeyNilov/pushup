@@ -130,7 +130,8 @@ async def button_callback(update: Update, context: CallbackContext):
     handler = command_map.get(query.data)
     if handler:
         # update.message = query.message
-        logging.error(str(update.message))
+        logging.error(str(update))
+        logging.error(str(query.message))
         await handler(update, context)
     else:
         await query.message.reply_text("Unknown command")
