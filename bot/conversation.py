@@ -11,7 +11,9 @@ from telegram.ext import (
     filters,
 )
 from service import repo
-from bot.utils import authorized_only, cancel
+from service.util import convert_to_int
+from bot.common import authorized_only, cancel
+from service.training import activate_training
 
 
 async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -23,7 +25,7 @@ async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler to receive the user's age and respond back."""
-    age = repo.convert_to_int(update.message.text)  # Get the user's response
+    age = convert_to_int(update.message.text)  # Get the user's response
     await update.message.reply_text(f"Thank you! Your age is {age}.")
     profile = repo.get_profile(user_id=update.effective_user.id)
     profile.age = age
@@ -66,8 +68,8 @@ async def start_training_program(update: Update, context: ContextTypes.DEFAULT_T
 
 @authorized_only
 async def receive_max_set(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    max_set = repo.convert_to_int(update.message.text)
-    repo.activate_training(user_id=update.effective_user.id, max_set=max_set)
+    max_set = convert_to_int(update.message.text)
+    activate_training(user_id=update.effective_user.id, max_set=max_set)
     await update.message.reply_text(
         "Training program activated, call /practice to get recommended workout"
     )

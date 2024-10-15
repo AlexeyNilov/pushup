@@ -5,10 +5,10 @@ This module contains message handlers for the bot.
 import random
 from telegram import Update, Chat
 from telegram.ext import ContextTypes
-from bot.utils import authorized_only
+from bot.common import authorized_only
 from service import repo
 from service.idea import get_idea
-from service.util import is_number
+from service.util import is_number, convert_to_int
 
 
 async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -18,7 +18,7 @@ async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
     max_all_time = repo.get_max_all_time(user_id=update.effective_user.id)
-    if repo.convert_to_int(update.message.text) > max_all_time:
+    if convert_to_int(update.message.text) > max_all_time:
         await update.message.reply_text("Good job!")
     else:
         await generate_idea(update=update, context=context)
@@ -32,7 +32,7 @@ async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> N
 
     await praise(update=update, context=context)
     repo.save_pushup(
-        value=repo.convert_to_int(update.message.text), user_id=update.effective_user.id
+        value=convert_to_int(update.message.text), user_id=update.effective_user.id
     )
     await update.message.reply_text(f"Logged {update.message.text} push-ups")
     repo.sync_profile(user_id=update.effective_user.id)

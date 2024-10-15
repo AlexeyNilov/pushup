@@ -4,11 +4,12 @@ This module contains command handlers for the bot.
 
 from telegram import Update
 from telegram.ext import ContextTypes
-from bot.utils import authorized_only
+from bot.common import authorized_only
 from service import repo
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
 from service.workout import get_workout
+from service.training import increment_training_day, deactivate_training
 
 
 @authorized_only
@@ -42,13 +43,13 @@ async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def stop_training_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    repo.deactivate_training(user_id=update.effective_user.id)
+    deactivate_training(user_id=update.effective_user.id)
     await update.message.reply_text("Training program deactivated")
 
 
 @authorized_only
 async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    repo.increment_training_day(user_id=update.effective_user.id)
+    increment_training_day(user_id=update.effective_user.id)
     await update.message.reply_text("Workout completed!")
 
 

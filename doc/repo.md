@@ -6,7 +6,7 @@ Contains the main bot logic:
 - `command.py`: Command handlers for the bot
 - `conversation.py`: Conversation handlers for the bot
 - `message.py`: Message handlers for the bot
-- `utils.py`: Utility functions for the bot
+- `common.py`: Utility functions for the bot
 
 ### conf/
 Configuration files:
@@ -61,10 +61,4 @@ Business logic and services:
 - `cooldown.py`: Cool-down exercise functionality (implementation not provided in snippets)
 
 ### test/
-Unit tests:
-- `test_cody_bot.py`: Tests for the main bot functionality
-- `test_auth_bot.py`: Tests for authentication functionality
-- `test_repo.py`: Tests for the repository functions
-- `test_workout.py`: Tests for workout-related functions
-- `test_idea.py`: Tests for idea generation
-- `test_cooldown.py`: Tests for cool-down functionality
+Unit tests

@@ -1,7 +1,7 @@
 from data.fastlite_db import DB
 from sqlite_minutils.db import Database
 from model.profile import Profile
-from service.util import convert_to_int, get_current_utc_timestamp
+from service.util import get_current_utc_timestamp
 
 
 class ProfileNotFound(Exception):
@@ -61,30 +61,6 @@ def get_profile(user_id: int, db: Database = DB) -> Profile:
     return Profile(**data)
 
 
-def activate_training(user_id: int, max_set: int = 5, db: Database = DB):
-    try:
-        profile = get_profile(user_id=user_id, db=db)
-    except ProfileNotFound:
-        profile = Profile(user_id=user_id)
-
-    if max_set < 3:
-        profile.training_mode = "Beginner"
-    else:
-        profile.training_mode = "Intermediate"
-    profile.training_day = 0
-    update_profile(dict(profile), db=db)
-
-
-def deactivate_training(user_id: int, db: Database = DB):
-    try:
-        profile = get_profile(user_id=user_id, db=db)
-    except ProfileNotFound:
-        return
-    profile.training_mode = "Freestyle"
-    profile.training_day = 0
-    update_profile(dict(profile), db=db)
-
-
 def sync_profile(user_id: int, db: Database = DB):
     try:
         profile = get_profile(user_id, db)
@@ -103,17 +79,6 @@ def get_max_sum(user_id: int, db: Database = DB) -> int:
     except ProfileNotFound:
         return 0
     return p.sum_per_day or 0
-
-
-def increment_training_day(user_id: int, db: Database = DB):
-    try:
-        profile = get_profile(user_id, db)
-    except ProfileNotFound:
-        return
-
-    if profile.training_mode in ["Beginner", "Intermediate"]:
-        profile.training_day = (profile.training_day or 0) + 1
-    update_profile(dict(profile), db)
 
 
 def has_profile(user_id: int, db: Database = DB) -> bool:

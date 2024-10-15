@@ -11,7 +11,7 @@ from telegram.ext import (
     filters,
 )
 from data.logger import set_logging
-from bot.utils import error_handler
+from bot.common import error_handler
 from bot.command import (
     info_command,
     help_command,
