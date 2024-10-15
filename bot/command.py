@@ -56,6 +56,7 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logging.error(str(update))
     """Sends a list of available commands to the user with inline keyboard buttons."""
     keyboard = [
         [
