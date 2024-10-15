@@ -4,7 +4,7 @@ This module contains command handlers for the bot.
 
 from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ContextTypes
-from bot.common import authorized_only
+from bot.common import authorized_only, remove_job_if_exists, alarm
 from service import repo
 from service.warmup import get_warmup
 from service.cooldown import get_cool_down
@@ -73,6 +73,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/help ❓ - Show this help message\n"
         "/practice 💪 - Get workout recommendation\n"
         "/record 🏆 - Show achievements\n"
+        "/set 🕒 - Set timer for 60 seconds\n"
         "/stats 📊 - Show today's statistics\n\n"
         "You can use the keyboard below for quick access to commands."
     )
@@ -105,3 +106,16 @@ Here's how to activate and follow the program:
 ⚡ Enjoy your fitness journey and have fun! 🎉🏋️‍♀️
 """
     )
+
+
+@authorized_only
+async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Add a job to the queue."""
+    chat_id = update.effective_message.chat_id
+    due = float(60)
+
+    remove_job_if_exists(str(chat_id), context)
+    context.job_queue.run_once(alarm, due, chat_id=chat_id, name=str(chat_id), data=due)
+
+    text = "Timer successfully set!"
+    await update.effective_message.reply_text(text)

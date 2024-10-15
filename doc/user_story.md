@@ -3,12 +3,6 @@
 * /explain get warmup/cooldown description
 * error reporting
 
-## UI
-
-* add menu buttons https://core.telegram.org/bots/tutorial#buttons-and-keyboards
-* https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/inlinekeyboard.py
-
-
 ## Ideas
 
 * reminders?
