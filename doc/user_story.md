@@ -7,7 +7,6 @@
 
 * reminders?
 * /rate get rating based on us army or other standard
-* /goal https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/conversationbot2.py
 * gather feedback (feelings, state)
 * congrats on mil standard reach
 * congrats on human stats reach
