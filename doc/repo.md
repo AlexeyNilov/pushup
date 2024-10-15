@@ -2,8 +2,11 @@
 
 ## bot/
 Contains the main bot logic:
-- `simply.py`: A simple bot implementation for testing
 - `cody.py`: The main bot implementation with various commands and handlers
+- `command.py`: Command handlers for the bot
+- `conversation.py`: Conversation handlers for the bot
+- `message.py`: Message handlers for the bot
+- `utils.py`: Utility functions for the bot
 
 ### conf/
 Configuration files:
@@ -14,10 +17,11 @@ Data-related functionality:
 - `fastlite_db.py`: Database setup and table definitions using FastLite
 - `logger.py`: Logging configuration
 - `backup_db.py`: Database backup functionality
-- `generate_schemes.py`: Script to generate database schemas
+- `generate_schema.py`: Script to generate database schemas
 - `yamler.py`: YAML file handling
 - `migrate_db.py`: Database migration script
 - `view_db.py`: Script to view database contents
+- `schema.sql`: SQL schema for the database
 
 ### db/
 Database and data files:
@@ -44,8 +48,8 @@ Data models:
 
 ### sample/
 Sample scripts:
-
-- `auth.py`: User authentication and authorization example
+- `simply.py`: A simple bot implementation for testing
+- `filter_user.py`: User authentication and authorization example
 
 ### service/
 Business logic and services:

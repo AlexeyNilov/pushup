@@ -1,33 +1,17 @@
 from data.fastlite_db import DB
 from sqlite_minutils.db import Database
-from datetime import datetime, timezone
 from model.profile import Profile
-from typing import Any
+from service.util import convert_to_int, get_current_utc_timestamp
 
 
 class ProfileNotFound(Exception):
     pass
 
 
-def get_current_utc_timestamp() -> str:
-    """Returns the current UTC timestamp in ISO 8601 format with timezone awareness."""
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
-
-
 def save_pushup(value: int, user_id: int, db: Database = DB) -> dict:
     e = {"time": get_current_utc_timestamp(), "user_id": user_id, "value": value}
     event = db.t.event
     return event.insert(**e)
-
-
-def is_number(msg: str) -> bool:
-    """Returns True if the input string represents a valid number, False otherwise."""
-    msg = msg.strip()
-    try:
-        int(msg)
-        return True
-    except ValueError:
-        return False
 
 
 def get_sum_for_today(user_id: int, db: Database = DB) -> int:
@@ -130,14 +114,6 @@ def increment_training_day(user_id: int, db: Database = DB):
     if profile.training_mode in ["Beginner", "Intermediate"]:
         profile.training_day = (profile.training_day or 0) + 1
     update_profile(dict(profile), db)
-
-
-def convert_to_int(text: str | Any) -> int:
-    text = str(text).strip()
-    if is_number(text):
-        return int(text)
-    else:
-        return 0
 
 
 def has_profile(user_id: int, db: Database = DB) -> bool:

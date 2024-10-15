@@ -21,11 +21,6 @@ def test_save_pushup(empty_db):
     assert r == {"id": 1, "user_id": 1, "value": 10}
 
 
-def test_is_number():
-    assert repo.is_number("10")
-    assert repo.is_number("text") is False
-
-
 def test_get_sum_for_today(empty_db):
     repo.save_pushup(value=10, user_id=1, db=empty_db)
     repo.save_pushup(value=20, user_id=1, db=empty_db)

@@ -8,6 +8,7 @@ from telegram.ext import ContextTypes
 from bot.utils import authorized_only
 from service import repo
 from service.idea import get_idea
+from service.util import is_number
 
 
 async def generate_idea(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -25,7 +26,7 @@ async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message.text and not repo.is_number(update.message.text):
+    if update.message.text and not is_number(update.message.text):
         await update.message.reply_text("Response is not implemented")
         return
 

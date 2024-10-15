@@ -1,3 +1,3 @@
 # Roadmap and todo
 
-* don't show warmup/cooldown in rest days
+* refactor repo
