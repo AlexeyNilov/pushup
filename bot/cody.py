@@ -9,6 +9,7 @@ from telegram.ext import (
     CommandHandler,
     MessageHandler,
     filters,
+    CallbackQueryHandler,
 )
 from data.logger import set_logging
 from bot.common import error_handler
@@ -20,6 +21,7 @@ from bot.command import (
     stats_all_time,
     stop_training_program,
     get_practice,
+    button_callback,
 )
 from bot.conversation import join_handler, change_age_handler, activate_handler
 from bot.message import parse_message, start_private_chat
@@ -40,6 +42,7 @@ def main():
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("deactivate", stop_training_program))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CallbackQueryHandler(button_callback))
     application.add_handler(
         MessageHandler(filters.TEXT & ~filters.COMMAND, parse_message)
     )
