@@ -113,6 +113,7 @@ Here's how to activate and follow the program:
     )
 
 
+@authorized_only
 async def button_callback(update: Update, context: CallbackContext):
     """Handles button presses from the inline keyboard."""
     query = update.callback_query
@@ -128,7 +129,7 @@ async def button_callback(update: Update, context: CallbackContext):
     handler = command_map.get(query.data)
     if handler:
         # Create a new Update object with the original message
-        new_update = Update(update.update_id, message=query.message)
-        await handler(new_update, context)
+        # new_update = Update(update.update_id, message=query.message)
+        await handler(update, context)
     else:
         await query.message.reply_text("Unknown command")
