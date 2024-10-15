@@ -22,6 +22,7 @@ def save_pushup(value: int, user_id: int, db: Database = DB) -> dict:
 
 def is_number(msg: str) -> bool:
     """Returns True if the input string represents a valid number, False otherwise."""
+    msg = msg.strip()
     try:
         int(msg)
         return True
@@ -132,6 +133,7 @@ def increment_training_day(user_id: int, db: Database = DB):
 
 
 def convert_to_int(text: str | Any) -> int:
+    text = str(text).strip()
     if is_number(text):
         return int(text)
     else:
