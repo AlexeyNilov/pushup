@@ -7,6 +7,7 @@ from telegram.ext import ContextTypes, ConversationHandler
 from service import repo
 from functools import wraps
 import logging
+from typing import Callable, Any
 
 
 async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -30,7 +31,7 @@ def remove_job_if_exists(name: str, context: ContextTypes.DEFAULT_TYPE) -> bool:
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Handles the cancellation of the conversation."""
     await update.message.reply_text("Okay, conversation cancelled.")
-    return ConversationHandler.END  # End the conversation
+    return ConversationHandler.END
 
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -38,22 +39,21 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
     logging.error(f"Error: {context.error}")
 
 
-def authorized_only(handler):
+def authorized_only(handler: Callable) -> Callable:
     """Decorator to restrict command handlers to authorized users only."""
 
-    @wraps(handler)  # Ensures the original handler's name and docstring are preserved
-    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-        chat = update.effective_chat
-        if chat.type != Chat.PRIVATE:
+    @wraps(handler)
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Any:
+        if update.effective_chat.type != Chat.PRIVATE:
             await update.message.reply_text("Please use private chat.")
             return
 
-        if repo.has_profile(update.effective_user.id):
-            return await handler(update, context)
-        else:
+        if not repo.has_profile(update.effective_user.id):
             await update.message.reply_text(
                 "Sorry, you are not authorized to use this bot, /join first"
             )
+            return
+
+        return await handler(update, context)
 
     return wrapper

@@ -13,48 +13,56 @@ from service.training import increment_training_day, deactivate_training
 
 
 @authorized_only
-async def get_practice(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def get_practice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user_id = update.effective_user.id
-    workout = get_workout(user_id=user_id)
+    workout_plan = get_workout(user_id=user_id)
 
-    if "rest" in workout.lower():
-        await update.message.reply_html(f"<b>Today's Practice</b>:\n{workout}")
+    if "rest" in workout_plan.lower():
+        await update.message.reply_html(f"<b>Today's Practice</b>:\n{workout_plan}")
     else:
-        await update.message.reply_html(f"<b>Warm up</b>:\n{get_warmup()}")
-        await update.message.reply_html(f"<b>Workout</b>:\n{workout}")
-        await update.message.reply_html(f"<b>Cool down</b>:\n{get_cool_down()}")
+        messages = [
+            ("<b>Warm up</b>", get_warmup()),
+            ("<b>Workout</b>", workout_plan),
+            ("<b>Cool down</b>", get_cool_down()),
+        ]
+        for title, content in messages:
+            await update.message.reply_html(f"{title}:\n{content}")
 
 
 @authorized_only
-async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    sum_for_today = repo.get_sum_for_today(user_id=update.effective_user.id)
-    max_for_today = repo.get_max_for_today(user_id=update.effective_user.id)
+async def stats_for_today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.effective_user.id
+    sum_for_today = repo.get_sum_for_today(user_id=user_id)
+    max_for_today = repo.get_max_for_today(user_id=user_id)
     await update.message.reply_text(f"Today sum: {sum_for_today}, max: {max_for_today}")
 
 
 @authorized_only
-async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    max_all_time = repo.get_max_all_time(user_id=update.effective_user.id)
-    max_sum = repo.get_max_sum(user_id=update.effective_user.id)
+async def stats_all_time(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    user_id = update.effective_user.id
+    max_all_time = repo.get_max_all_time(user_id=user_id)
+    max_sum = repo.get_max_sum(user_id=user_id)
     await update.message.reply_text(
         f"Record set: {max_all_time}, sum per day: {max_sum}"
     )
 
 
 @authorized_only
-async def stop_training_program(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def stop_training_program(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+) -> None:
     deactivate_training(user_id=update.effective_user.id)
     await update.message.reply_text("Training program deactivated")
 
 
 @authorized_only
-async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     increment_training_day(user_id=update.effective_user.id)
     await update.message.reply_text("Workout completed!")
 
 
 @authorized_only
-async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Sends a list of available commands to the user with a keyboard menu."""
     commands = [
         ["/practice", "/done"],
@@ -83,9 +91,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 @authorized_only
-async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.effective_message.reply_html(
-        f"""
+async def info_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    info_text = f"""
 👋 Greetings, {update.effective_user.full_name}! Let's get you started with this bot. Here's how you can use it:
 
 📌 <b>Main Feature: Push-ups Logging</b>
@@ -106,17 +113,16 @@ Here's how to activate and follow the program:
 
 ⚡ Enjoy your fitness journey and have fun! 🎉🏋️‍♀️
 """
-    )
+    await update.effective_message.reply_html(info_text)
 
 
 @authorized_only
 async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Add a job to the queue."""
     chat_id = update.effective_message.chat_id
-    due = float(60)
+    due = 60.0
 
     remove_job_if_exists(str(chat_id), context)
     context.job_queue.run_once(alarm, due, chat_id=chat_id, name=str(chat_id), data=due)
 
-    text = "Timer successfully set!"
-    await update.effective_message.reply_text(text)
+    await update.effective_message.reply_text("Timer successfully set!")
