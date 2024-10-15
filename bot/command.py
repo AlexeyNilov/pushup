@@ -57,11 +57,8 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user with a keyboard menu."""
     commands = [
-        ["🎯 Activate", "🎂 Age"],
-        ["🎯 Deactivate", "✅ Done"],
-        ["💡 Info", "❓ Help"],
-        ["💪 Practice", "🏆 Record"],
-        ["📊 Stats"],
+        ["💪 Practice", "✅ Done"],
+        ["📊 Stats", "🏆 Record"],
     ]
 
     keyboard = ReplyKeyboardMarkup(commands, resize_keyboard=True)
