@@ -128,7 +128,6 @@ async def button_callback(update: Update, context: CallbackContext):
 
     handler = command_map.get(query.data)
     if handler:
-        # Create a new Update object with the original message
         update.message = query.message
         await handler(update, context)
     else:
