@@ -12,10 +12,13 @@ from typing import Callable, Any
 
 async def alarm(context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send the alarm message."""
-    job = context.job
-    await context.bot.send_message(
-        job.chat_id, text=f"Beep! {job.data} seconds are over!"
-    )
+    chat_id = context.job.chat_id
+    if isinstance(chat_id, int):
+        await context.bot.send_message(
+            chat_id=chat_id, text=f"Beep! {context.job.data} seconds are over!"
+        )
+    else:
+        logging.error(f"Invalid chat_id: {chat_id}")
 
 
 def remove_job_if_exists(name: str, context: ContextTypes.DEFAULT_TYPE) -> bool:

@@ -10,10 +10,7 @@ def activate_training(user_id: int, max_set: int = 5, db: Database = DB):
     except ProfileNotFound:
         profile = Profile(user_id=user_id)
 
-    if max_set < 3:
-        profile.training_mode = "Beginner"
-    else:
-        profile.training_mode = "Intermediate"
+    profile.training_mode = "Beginner" if max_set < 3 else "Intermediate"
     profile.training_day = 0
     update_profile(dict(profile), db=db)
 
@@ -21,19 +18,18 @@ def activate_training(user_id: int, max_set: int = 5, db: Database = DB):
 def deactivate_training(user_id: int, db: Database = DB):
     try:
         profile = get_profile(user_id=user_id, db=db)
+        profile.training_mode = "Freestyle"
+        profile.training_day = 0
+        update_profile(dict(profile), db=db)
     except ProfileNotFound:
-        return
-    profile.training_mode = "Freestyle"
-    profile.training_day = 0
-    update_profile(dict(profile), db=db)
+        pass
 
 
 def increment_training_day(user_id: int, db: Database = DB):
     try:
         profile = get_profile(user_id, db)
+        if profile.training_mode in ["Beginner", "Intermediate"]:
+            profile.training_day = (profile.training_day or 0) + 1
+            update_profile(dict(profile), db)
     except ProfileNotFound:
-        return
-
-    if profile.training_mode in ["Beginner", "Intermediate"]:
-        profile.training_day = (profile.training_day or 0) + 1
-    update_profile(dict(profile), db)
+        pass

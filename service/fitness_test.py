@@ -36,12 +36,17 @@ def get_army_pushup_range(age: int) -> Tuple[int, int]:
     if age < 17:
         raise ValueError("Age must be at least 17")
 
-    # Determine the age group based on the age
-    for min_age, max_age, age_group in AGE_GROUPS_ARMY:
-        if min_age <= age <= max_age:
-            return US_ARMY_AGE_RANGE[age_group]
-
-    raise ValueError("Age group not found")  # Fallback, should not reach here
+    result = next(
+        (
+            US_ARMY_AGE_RANGE[age_group]
+            for min_age, max_age, age_group in AGE_GROUPS_ARMY
+            if min_age <= age <= max_age
+        ),
+        None,
+    )
+    if result is None:
+        raise ValueError(f"No pushup range found for age {age}")
+    return result
 
 
 # Define age ranges and corresponding group names
@@ -95,17 +100,23 @@ RATINGS: Dict[str, Dict[str, Tuple[int, Any]]] = {
 
 def get_age_group(age: int) -> str:
     """Determine the age group based on the given age."""
-    for min_age, max_age, group in AGE_GROUPS:
-        if min_age <= age <= max_age:
-            return group
-    raise ValueError("Invalid age")  # Should not reach here
+    return next(
+        (group for min_age, max_age, group in AGE_GROUPS if min_age <= age <= max_age),
+        "Unknown",
+    )
 
 
 def get_pushup_rating(age: int, pushup_count: int) -> str:
     """Returns the push-up performance rating based on age and count."""
     age_group = get_age_group(age)  # Get the correct age group
-    # Find the matching rating for the push-up count
-    for rating, (min_count, max_count) in RATINGS[age_group].items():
-        if min_count <= pushup_count <= max_count:
-            return rating
-    return "Unknown rating"  # Fallback, should not occur
+    if not age_group:
+        raise ValueError("Invalid age")
+
+    return next(
+        (
+            rating
+            for rating, (min_count, max_count) in RATINGS[age_group].items()
+            if min_count <= pushup_count <= max_count
+        ),
+        "Unknown rating",
+    )

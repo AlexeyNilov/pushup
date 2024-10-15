@@ -6,7 +6,4 @@ WARM_UPS = load_yaml("db/warmup.yaml")
 
 
 def get_warmup() -> str:
-    warmup = list()
-    for items in WARM_UPS.values():
-        warmup.append(random.choice(list(items.keys())))
-    return "\n".join(warmup)
+    return "\n".join(random.choice(list(items.keys())) for items in WARM_UPS.values())

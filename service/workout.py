@@ -11,32 +11,41 @@ BEGINNER_PROGRAM = load_yaml("db/beginner.yaml")
 
 
 def get_program(level: str = "intermediate") -> list:
-    if level == "beginner":
-        return BEGINNER_PROGRAM["Program"]
-    return INTERMEDIATE_PROGRAM["Program"]
+    return (
+        BEGINNER_PROGRAM["Program"]
+        if level == "beginner"
+        else INTERMEDIATE_PROGRAM["Program"]
+    )
 
 
 def get_workout(user_id: int, db: Database = DB) -> str:
-    key = random.choice(list(WORKOUTS.keys()))
     try:
         profile = get_profile(user_id, db=db)
-        if profile.training_mode == "Beginner":
-            key = get_program(level="beginner")[profile.training_day or 0]
-        elif profile.training_mode == "Intermediate":
-            key = get_program(level="intermediate")[profile.training_day or 0]
+        if profile.training_mode in ["Beginner", "Intermediate"]:
+            key = get_program(level=profile.training_mode.lower())[
+                profile.training_day or 0
+            ]
+        else:
+            key = random.choice(list(WORKOUTS.keys()))
     except ProfileNotFound:
-        pass
+        key = random.choice(list(WORKOUTS.keys()))
 
     avg_rep = get_average(user_id, db=db)
     max_rep = get_max_all_time(user_id, db=db)
 
     desc: str = WORKOUTS[key]
-    desc = desc.replace("{start_rep}", str(int(avg_rep / 2)))
-    desc = desc.replace("{avg_rep}", str(avg_rep))
-    desc = desc.replace("{avg_rep+1}", str(avg_rep + 1))
-    desc = desc.replace("{avg_rep+2}", str(avg_rep + 2))
-    desc = desc.replace("{avg_rep+3}", str(avg_rep + 3))
-    desc = desc.replace("{max_rep}", str(max_rep))
-    desc = desc.replace("{max_rep-20%}", str(int(max_rep * 0.8)))
-    desc = desc.replace("{max_rep-30%}", str(int(max_rep * 0.7)))
+    replacements = {
+        "{start_rep}": str(int(avg_rep / 2)),
+        "{avg_rep}": str(avg_rep),
+        "{avg_rep+1}": str(avg_rep + 1),
+        "{avg_rep+2}": str(avg_rep + 2),
+        "{avg_rep+3}": str(avg_rep + 3),
+        "{max_rep}": str(max_rep),
+        "{max_rep-20%}": str(int(max_rep * 0.8)),
+        "{max_rep-30%}": str(int(max_rep * 0.7)),
+    }
+
+    for placeholder, value in replacements.items():
+        desc = desc.replace(placeholder, value)
+
     return f"<i>{key}</i>\n{desc}"
