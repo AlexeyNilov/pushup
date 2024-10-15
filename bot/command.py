@@ -2,7 +2,7 @@
 This module contains command handlers for the bot.
 """
 
-from telegram import Update
+from telegram import Update, ReplyKeyboardMarkup
 from telegram.ext import ContextTypes
 from bot.common import authorized_only
 from service import repo
@@ -55,8 +55,19 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Sends a list of available commands to the user."""
-    commands = (
+    """Sends a list of available commands to the user with a keyboard menu."""
+    commands = [
+        ["🎯 Activate", "🎂 Age"],
+        ["🎯 Deactivate", "✅ Done"],
+        ["💡 Info", "❓ Help"],
+        ["💪 Practice", "🏆 Record"],
+        ["📊 Stats"],
+    ]
+
+    keyboard = ReplyKeyboardMarkup(commands, resize_keyboard=True)
+
+    message = (
+        "Here are the available commands:\n\n"
         "/activate 🎯 - Activate training program\n"
         "/age 🎂 - Change your age\n"
         "/deactivate 🎯 - Deactivate training program\n"
@@ -65,9 +76,11 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/help ❓ - Show this help message\n"
         "/practice 💪 - Get workout recommendation\n"
         "/record 🏆 - Show achievements\n"
-        "/stats 📊 - Show today's statistics"
+        "/stats 📊 - Show today's statistics\n\n"
+        "You can use the keyboard below for quick access to commands."
     )
-    await update.message.reply_text(commands)
+
+    await update.message.reply_text(message, reply_markup=keyboard)
 
 
 @authorized_only

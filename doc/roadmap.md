@@ -1,3 +1,3 @@
 # Roadmap and todo
 
-* refactor repo
+* add menu buttons https://core.telegram.org/bots/tutorial#buttons-and-keyboards
