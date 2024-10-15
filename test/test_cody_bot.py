@@ -7,6 +7,7 @@ import os
 os.environ["PUSHUP_DB_PATH"] = "db/test_empty.sqlite"
 
 from bot import cody as bot
+from bot.conversation import receive_max_set, start_training_program
 from data.fastlite_db import recreate_db
 from service.repo import update_profile
 
@@ -81,7 +82,7 @@ async def test_parse_message(msg, authorized_update, context):
 @pytest.mark.asyncio
 async def test_parse_message_race(msg, authorized_update, context):
     authorized_update.message.text = "10"
-    await bot.receive_max_set(authorized_update, context)
+    await receive_max_set(authorized_update, context)
     await bot.parse_message(authorized_update, context)
     msg.reply_text.assert_any_call("Logged 10 push-ups")
 
@@ -108,7 +109,7 @@ async def test_get_practice(msg, authorized_update, context):
 
 @pytest.mark.asyncio
 async def test_start_training_program(msg, authorized_update, context):
-    await bot.start_training_program(authorized_update, context)
+    await start_training_program(authorized_update, context)
     msg.reply_text.assert_called_once_with(
         "Please tell me how much push-ups you can do in one go?"
     )
@@ -124,7 +125,7 @@ async def test_complete_workout(msg, authorized_update, context):
 async def test_receive_max_set(msg, authorized_update, context):
     context.user_data["MAX_SET_COLLECTION"] = True
     authorized_update.message.text = "10"
-    await bot.receive_max_set(authorized_update, context)
+    await receive_max_set(authorized_update, context)
     msg.reply_text.assert_called_once_with(
         "Training program activated, call /practice to get recommended workout"
     )
