@@ -2,9 +2,8 @@
 This module contains command handlers for the bot.
 """
 
-import logging
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ContextTypes, CallbackContext
+from telegram import Update, ReplyKeyboardMarkup
+from telegram.ext import ContextTypes
 from bot.common import authorized_only
 from service import repo
 from service.warmup import get_warmup
@@ -56,20 +55,13 @@ async def complete_workout(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.error(str(update))
-    """Sends a list of available commands to the user with inline keyboard buttons."""
-    keyboard = [
-        [
-            InlineKeyboardButton("💪 Practice", callback_data="/practice"),
-            InlineKeyboardButton("✅ Done", callback_data="/done"),
-        ],
-        [
-            InlineKeyboardButton("📊 Stats", callback_data="/stats"),
-            InlineKeyboardButton("🏆 Record", callback_data="/record"),
-        ],
+    """Sends a list of available commands to the user with a keyboard menu."""
+    commands = [
+        ["/practice", "/done"],
+        ["/stats", "/record"],
     ]
 
-    reply_markup = InlineKeyboardMarkup(keyboard)
+    keyboard = ReplyKeyboardMarkup(commands, resize_keyboard=True, is_persistent=True)
 
     message = (
         "Here are the available commands:\n\n"
@@ -82,10 +74,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/practice 💪 - Get workout recommendation\n"
         "/record 🏆 - Show achievements\n"
         "/stats 📊 - Show today's statistics\n\n"
-        "You can use the buttons below for quick access to commands."
+        "You can use the keyboard below for quick access to commands."
     )
 
-    await update.message.reply_text(message, reply_markup=reply_markup)
+    await update.message.reply_text(message, reply_markup=keyboard)
 
 
 @authorized_only
@@ -113,27 +105,3 @@ Here's how to activate and follow the program:
 ⚡ Enjoy your fitness journey and have fun! 🎉🏋️‍♀️
 """
     )
-
-
-@authorized_only
-async def button_callback(update: Update, context: CallbackContext):
-    """Handles button presses from the inline keyboard."""
-    query = update.callback_query
-    await query.answer()
-
-    command_map = {
-        "/practice": get_practice,
-        "/done": complete_workout,
-        "/stats": stats_for_today,
-        "/record": stats_all_time,
-    }
-
-    handler = command_map.get(query.data)
-    logging.error(str(handler))
-    if handler:
-        update.edit_message_text(text=query.data)
-        logging.error(str(update))
-        logging.error(str(query.message))
-        await handler(update, context)
-    else:
-        await query.message.reply_text("Unknown command")

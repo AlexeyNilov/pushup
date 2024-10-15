@@ -6,6 +6,7 @@ from telegram import Chat, Update
 from telegram.ext import ContextTypes, ConversationHandler
 from service import repo
 from functools import wraps
+import logging
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -16,7 +17,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Global error handler to catch exceptions."""
-    pass
+    logging.error(f"Error: {context.error}")
 
 
 def authorized_only(handler):

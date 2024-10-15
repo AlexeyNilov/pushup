@@ -91,7 +91,7 @@ async def test_parse_message_race(msg, authorized_update, context):
 async def test_parse_message_fail(msg, authorized_update, context):
     authorized_update.message.text = "test"
     await bot.parse_message(authorized_update, context)
-    msg.reply_text.assert_called_once_with("Response is not implemented")
+    msg.reply_text.assert_called_once_with("Response to test is not implemented")
 
 
 @pytest.mark.asyncio

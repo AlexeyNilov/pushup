@@ -27,7 +27,9 @@ async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update.message.text and not is_number(update.message.text):
-        await update.message.reply_text("Response is not implemented")
+        await update.message.reply_text(
+            f"Response to {update.message.text} is not implemented"
+        )
         return
 
     await praise(update=update, context=context)
