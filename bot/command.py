@@ -60,12 +60,12 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Sends a list of available commands to the user with inline keyboard buttons."""
     keyboard = [
         [
-            InlineKeyboardButton("💪 Practice", callback_data="practice"),
-            InlineKeyboardButton("✅ Done", callback_data="done"),
+            InlineKeyboardButton("💪 Practice", callback_data="/practice"),
+            InlineKeyboardButton("✅ Done", callback_data="/done"),
         ],
         [
-            InlineKeyboardButton("📊 Stats", callback_data="stats"),
-            InlineKeyboardButton("🏆 Record", callback_data="record"),
+            InlineKeyboardButton("📊 Stats", callback_data="/stats"),
+            InlineKeyboardButton("🏆 Record", callback_data="/record"),
         ],
     ]
 
@@ -122,15 +122,15 @@ async def button_callback(update: Update, context: CallbackContext):
     await query.answer()
 
     command_map = {
-        "practice": get_practice,
-        "done": complete_workout,
-        "stats": stats_for_today,
-        "record": stats_all_time,
+        "/practice": get_practice,
+        "/done": complete_workout,
+        "/stats": stats_for_today,
+        "/record": stats_all_time,
     }
 
     handler = command_map.get(query.data)
     if handler:
-        # update.message = query.message
+        update.edit_message_text(text=query.data)
         logging.error(str(update))
         logging.error(str(query.message))
         await handler(update, context)
