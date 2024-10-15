@@ -129,6 +129,7 @@ async def button_callback(update: Update, context: CallbackContext):
     }
 
     handler = command_map.get(query.data)
+    logging.error(str(handler))
     if handler:
         update.edit_message_text(text=query.data)
         logging.error(str(update))
