@@ -1,14 +1,4 @@
-import pytest
-import fastlite as fl
-from data.fastlite_db import recreate_db
 from service import util
-
-
-@pytest.fixture
-def empty_db():
-    db = fl.database("db/test_empty.sqlite")
-    recreate_db(db)
-    return db
 
 
 def test_get_current_utc_timestamp():
