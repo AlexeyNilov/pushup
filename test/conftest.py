@@ -6,13 +6,33 @@ import os
 
 os.environ["PUSHUP_DB_PATH"] = "db/test_empty.sqlite"
 
+import fastlite as fl
 from data.fastlite_db import recreate_db
-from service.repo import update_profile
+from service.repo import update_profile, Profile
 
 
 @pytest.fixture
-def authorized_user() -> User:
-    return User(id=123456789, is_bot=False, first_name="TestUser")
+def empty_db():
+    db = fl.database("db/test_empty.sqlite")
+    recreate_db(db)
+    return db
+
+
+@pytest.fixture
+def user_id() -> int:
+    return 123456789
+
+
+@pytest.fixture
+def profile(empty_db, user_id) -> Profile:
+    data = {"user_id": user_id, "sum_per_day": 10, "max_set": 5, "age": 20}
+    update_profile(data, db=empty_db)
+    return Profile(**data)
+
+
+@pytest.fixture
+def authorized_user(user_id) -> User:
+    return User(id=user_id, is_bot=False, first_name="TestUser")
 
 
 @pytest.fixture
@@ -23,9 +43,9 @@ def msg() -> MagicMock:
 
 
 @pytest.fixture
-def update(authorized_user, msg) -> MagicMock:
+def update(authorized_user, msg, user_id) -> MagicMock:
     recreate_db()
-    update_profile({"user_id": 123456789})
+    update_profile({"user_id": user_id})
     upd = MagicMock(spec=Update)
     upd.message = msg
     upd.effective_message = AsyncMock(spec=Message)

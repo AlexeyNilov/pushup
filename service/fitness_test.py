@@ -1,6 +1,7 @@
 """ Fitness tests/standards collection"""
 
 from typing import List, Tuple, Dict, Any
+from service.repo import get_profile
 
 
 AGE_GROUPS_ARMY = [
@@ -120,3 +121,15 @@ def get_pushup_rating(age: int, pushup_count: int) -> str:
         ),
         "Unknown rating",
     )
+
+
+def get_rating(user_id: int) -> Tuple[str, str]:
+    """Returns the overall performance rating based on age and push-up count."""
+    p = get_profile(user_id)
+    army_min, _ = get_army_pushup_range(p.age)
+    if p.max_set >= army_min:
+        army_rating = "you are fit"
+    else:
+        army_rating = "you need more training"
+    civil_rating = get_pushup_rating(age=p.age, pushup_count=p.max_set).lower()
+    return army_rating, civil_rating

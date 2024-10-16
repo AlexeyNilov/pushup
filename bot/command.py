@@ -10,6 +10,7 @@ from service.warmup import get_warmup
 from service.cooldown import get_cool_down
 from service.workout import get_workout
 from service.training import increment_training_day, deactivate_training
+from service.fitness_test import get_rating
 
 
 @authorized_only
@@ -81,6 +82,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "/info 💡 - How to use the bot\n"
         "/help ❓ - Show this help message\n"
         "/practice 💪 - Get workout recommendation\n"
+        "/rating 🏅 - Get your fitness rating"
         "/record 🏆 - Show achievements\n"
         "/set 🕒 - Set timer for 60 seconds\n"
         "/stats 📊 - Show today's statistics\n\n"
@@ -126,3 +128,12 @@ async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     context.job_queue.run_once(alarm, due, chat_id=chat_id, name=str(chat_id), data=due)
 
     await update.effective_message.reply_text("Timer successfully set!")
+
+
+@authorized_only
+async def rating_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    army_rating, civil_rating = get_rating(update.effective_user.id)
+    await update.message.reply_text(
+        f""""Based on your max set and age, US army thinks that {army_rating}.
+According to general population statistics your shape is {civil_rating}"""
+    )

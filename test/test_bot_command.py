@@ -75,3 +75,9 @@ async def test_complete_workout(msg, update, context):
 async def test_stop_training_program(msg, update, context):
     await command.stop_training_program(update, context)
     msg.reply_text.assert_called_once_with("Training program deactivated")
+
+
+@pytest.mark.asyncio
+async def test_rating_command(msg, update, context, profile):
+    await command.rating_command(update, context)
+    msg.reply_text.assert_called_once()

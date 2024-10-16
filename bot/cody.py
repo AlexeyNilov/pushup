@@ -21,6 +21,7 @@ from bot.command import (
     stop_training_program,
     get_practice,
     set_timer,
+    rating_command,
 )
 from bot.conversation import join_handler, change_age_handler, activate_handler
 from bot.message import parse_message, start_private_chat
@@ -39,6 +40,7 @@ def main():
     application.add_handler(CommandHandler("done", complete_workout))
     application.add_handler(CommandHandler("stats", stats_for_today))
     application.add_handler(CommandHandler("info", info_command))
+    application.add_handler(CommandHandler("rating", rating_command))
     application.add_handler(CommandHandler("record", stats_all_time))
     application.add_handler(CommandHandler("practice", get_practice))
     application.add_handler(CommandHandler("deactivate", stop_training_program))
