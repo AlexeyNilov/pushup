@@ -26,14 +26,16 @@ async def praise(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 @authorized_only
 async def parse_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message.text and not is_number(update.message.text):
+    if not update.message.text or not is_number(update.message.text):
         return
 
     await praise(update=update, context=context)
-    repo.save_pushup(
-        value=convert_to_int(update.message.text), user_id=update.effective_user.id
-    )
-    await update.message.reply_text(f"Logged {update.message.text} push-ups")
+    pushups = convert_to_int(update.message.text)
+    repo.save_pushup(value=pushups, user_id=update.effective_user.id)
+
+    # Add a thumbs up reaction instead of replying with text
+    await update.message.set_reaction("👍")
+
     repo.sync_profile(user_id=update.effective_user.id)
 
 

@@ -6,13 +6,11 @@ from bot.conversation import receive_max_set
 
 @pytest.mark.asyncio
 async def test_parse_message(msg, update, context):
+    # Test for input "10"
     update.message.text = "10"
     await parse_message(update, context)
-    msg.reply_text.assert_any_call("Logged 10 push-ups")
+    update.message.set_reaction.assert_called_with("👍")
     msg.reply_text.assert_any_call("Good job!")
-    update.message.text = "5"
-    await parse_message(update, context)
-    msg.reply_text.assert_any_call("Logged 5 push-ups")
 
 
 @pytest.mark.asyncio
@@ -20,7 +18,7 @@ async def test_parse_message_race(msg, update, context):
     update.message.text = "10"
     await receive_max_set(update, context)
     await parse_message(update, context)
-    msg.reply_text.assert_any_call("Logged 10 push-ups")
+    update.message.set_reaction.assert_called_with("👍")
 
 
 @pytest.mark.asyncio
