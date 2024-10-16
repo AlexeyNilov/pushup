@@ -11,7 +11,6 @@ def update():
     upd.effective_user = MagicMock(spec=User)
     upd.effective_user.full_name = "Test User"
     upd.effective_chat = MagicMock(spec=Chat)
-
     return upd
 
 
