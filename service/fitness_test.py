@@ -128,8 +128,8 @@ def get_rating(user_id: int) -> Tuple[str, str]:
     p = get_profile(user_id)
     army_min, _ = get_army_pushup_range(p.age)
     if p.max_set >= army_min:
-        army_rating = "you are fit"
+        army_rating = "You are fit!"
     else:
-        army_rating = "you need more training"
+        army_rating = "You better hit the ground and train harder, soldier!"
     civil_rating = get_pushup_rating(age=p.age, pushup_count=p.max_set).lower()
     return army_rating, civil_rating

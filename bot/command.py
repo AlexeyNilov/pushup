@@ -135,6 +135,6 @@ async def rating_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     army_rating, civil_rating = get_rating(update.effective_user.id)
     await update.message.reply_html(
         f""""💪 Based on your <b>max set</b> and <b>age</b>,
-the <b>US Army</b> rates your performance as: <b>{army_rating}</b> 🪖.
-📊 Compared to the <b>general population</b>, your fitness level is: <b>{civil_rating}</b> 🏃‍♂️."""
+the <b>US Army</b> says: <i>{army_rating}</i> 🪖.
+📊 Compared to the <b>general population</b>, your fitness level is: <i>{civil_rating}</i> 🏃‍♂️."""
     )

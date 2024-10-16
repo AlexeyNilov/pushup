@@ -14,6 +14,9 @@ def test_get_pushup_rating():
 
 def test_get_rating(empty_db):
     update_profile({"user_id": 1, "age": 20, "max_set": 40}, db=empty_db)
-    assert get_rating(1) == ("you need more training", "good")
+    assert get_rating(1) == (
+        "You better hit the ground and train harder, soldier!",
+        "good",
+    )
     update_profile({"user_id": 1, "age": 50, "max_set": 40}, db=empty_db)
-    assert get_rating(1) == ("you are fit", "excellent")
+    assert get_rating(1) == ("You are fit!", "excellent")
