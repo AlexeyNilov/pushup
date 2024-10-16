@@ -1,35 +1,6 @@
 import pytest
-from unittest.mock import AsyncMock, MagicMock
-from telegram import Update, Chat, User, Message
-from telegram.ext import ContextTypes
+from unittest.mock import MagicMock
 from bot.command import set_timer
-from data.fastlite_db import recreate_db
-from service.repo import update_profile
-
-
-@pytest.fixture
-def authorized_user() -> User:
-    return User(id=123456789, is_bot=False, first_name="TestUser")
-
-
-@pytest.fixture
-def update(authorized_user) -> MagicMock:
-    recreate_db()
-    update_profile({"user_id": 123456789})
-    upd = MagicMock(spec=Update)
-    upd.effective_user = authorized_user
-    upd.effective_message = AsyncMock(spec=Message)
-    upd.effective_chat.type = Chat.PRIVATE
-    return upd
-
-
-@pytest.fixture
-def context():
-    ctx = MagicMock(spec=ContextTypes.DEFAULT_TYPE)
-    ctx.job_queue = MagicMock()
-    ctx.job_queue.run_once = MagicMock()
-    ctx.job_queue.get_jobs_by_name = MagicMock(return_value=[])
-    return ctx
 
 
 @pytest.mark.asyncio
