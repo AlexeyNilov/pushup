@@ -4,3 +4,4 @@ pre-commit
 mypy
 flake8
 black
+coverage
