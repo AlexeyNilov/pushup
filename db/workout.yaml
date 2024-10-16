@@ -71,3 +71,62 @@ Core Stability: |
 Pushup Max Test: |
   Test how many pushups you can do in one go. Try to reach beyond {max_rep}.
   Rest, then do 2 more sets per {max_rep-30%}.
+Pushup Supersets + Plank + Climbers: |
+  Pushups (normal) - 5 sets of {avg_rep} reps (rest 60 seconds).
+  Plank - 3 sets, hold for 1 minute.
+  Mountain Climbers - 3 sets of 30 seconds.
+Pushup Pyramid + Core: |
+  Start with {start_rep} reps, increase by 2 reps each set until you hit {max_rep-20%} reps, then descend back down to {start_rep} reps.
+  Plank 3 sets of 1 minute hold.
+Pushup Variations + Core: |
+  Wide Pushups - 4 sets of {avg_rep} reps.
+  Diamond Pushups - 4 sets of {start_rep} reps.
+  Normal Pushups - 2 sets of {max_rep-20%} reps.
+  Core - Plank for 3 sets of 1 minute.
+7 sets: |
+  Rest 60 seconds between each set
+  1. {avg_rep} push-ups
+  2. {avg_rep} push-ups
+  3. {max_rep-30%} push-ups
+  4. {max_rep-30%} push-ups
+  5. {avg_rep} push-ups
+  6. {avg_rep}+ push-ups
+  7. {max_rep-20%}+ push-ups
+Pushup Strength Day: |
+  Elevated Pushups - 4 sets of {avg_rep} reps (feet on a bench or chair).
+  Diamond Pushups - 3 sets of {start_rep} reps.
+  Clapping Pushups - 3 sets of {start_rep} reps (for explosive power).
+Core and Stability: |
+  Elbow Plank to Plank - 4 sets of {avg_rep} reps.
+  Mountain Climbers - 3 sets of 45 seconds.
+  Plank - 3 sets of 1 minute.
+Pushup Endurance Challenge: |
+  Perform 2x {max_rep} pushups as fast as you can.
+  Break it into sets if needed (e.g., 20, 15, etc.), resting briefly between sets until you reach 2x {max_rep}.
+8 sets: |
+  Rest 60 seconds between each set
+  1. {avg_rep+2} push-ups
+  2. {avg_rep+2} push-ups
+  3. {avg_rep+3} push-ups
+  4. {avg_rep+3} push-ups
+  5. {avg_rep} push-ups
+  6. {avg_rep} push-ups
+  7. {avg_rep} push-ups
+  8. {max_rep-20%}+ push-ups
+Core + Pushup Endurance: |
+  Pushups - 5 sets of {max_rep-30%} reps.
+  Plank - 3 sets of 1 minute.
+  Side Plank - 3 sets, 45 seconds each side.
+Pushup Volume: |
+  Pushups - 4 sets of {max_rep-20%} reps.
+  Plank to Pushup - 3 sets of 15 reps.
+  Core - Plank for 1 minute.
+Clapping push-ups: |
+  Clapping Pushups - 4 sets of {start_rep} reps.
+  Diamond Pushups - 3 sets of {start_rep} reps.
+  Normal Pushups - 2 sets of {avg_rep} reps.
+Pushup Endurance: |
+  Perform 100 pushups in as few sets as possible.
+Test Day - 100 Pushups: |
+  Goal - Perform 100 pushups in one continuous set.
+  Take deep breaths, control your pace, and push to your limits.
