@@ -16,7 +16,7 @@ from bot.common import authorized_only, cancel
 from service.training import activate_training
 
 
-async def join_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def join_bot(update: Update, context: ContextTypes.DEFAULT_TYPE):
     repo.sync_profile(user_id=update.effective_user.id)
     await update.message.reply_text("Hello! Please tell me your age.")
     return "ask_age"
@@ -35,7 +35,7 @@ async def receive_age(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 join_handler = ConversationHandler(
-    entry_points=[CommandHandler("join", join_command)],
+    entry_points=[CommandHandler("join", join_bot)],
     states={
         "ask_age": [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_age)],
     },

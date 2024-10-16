@@ -54,4 +54,5 @@ def illegal_update(illegal_user, msg):
     upd = MagicMock(spec=Update)
     upd.effective_user = illegal_user
     upd.message = msg
+    upd.effective_chat.type = Chat.PRIVATE
     return upd

@@ -1,6 +1,33 @@
 import pytest
 from telegram import Chat
-from bot.message import start_private_chat
+from bot.message import start_private_chat, parse_message
+from bot.conversation import receive_max_set
+
+
+@pytest.mark.asyncio
+async def test_parse_message(msg, update, context):
+    update.message.text = "10"
+    await parse_message(update, context)
+    msg.reply_text.assert_any_call("Logged 10 push-ups")
+    msg.reply_text.assert_any_call("Good job!")
+    update.message.text = "5"
+    await parse_message(update, context)
+    msg.reply_text.assert_any_call("Logged 5 push-ups")
+
+
+@pytest.mark.asyncio
+async def test_parse_message_race(msg, update, context):
+    update.message.text = "10"
+    await receive_max_set(update, context)
+    await parse_message(update, context)
+    msg.reply_text.assert_any_call("Logged 10 push-ups")
+
+
+@pytest.mark.asyncio
+async def test_parse_message_fail(msg, update, context):
+    update.message.text = "test"
+    await parse_message(update, context)
+    msg.reply_text.assert_not_called()
 
 
 @pytest.mark.asyncio
