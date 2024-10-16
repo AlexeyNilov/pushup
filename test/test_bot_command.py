@@ -80,4 +80,4 @@ async def test_stop_training_program(msg, update, context):
 @pytest.mark.asyncio
 async def test_rating_command(msg, update, context, profile):
     await command.rating_command(update, context)
-    msg.reply_text.assert_called_once()
+    msg.reply_html.assert_called_once()

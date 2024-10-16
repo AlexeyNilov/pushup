@@ -82,7 +82,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         "/info 💡 - How to use the bot\n"
         "/help ❓ - Show this help message\n"
         "/practice 💪 - Get workout recommendation\n"
-        "/rating 🏅 - Get your fitness rating"
+        "/rating 🏅 - Get your fitness rating\n"
         "/record 🏆 - Show achievements\n"
         "/set 🕒 - Set timer for 60 seconds\n"
         "/stats 📊 - Show today's statistics\n\n"
@@ -133,7 +133,8 @@ async def set_timer(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 @authorized_only
 async def rating_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     army_rating, civil_rating = get_rating(update.effective_user.id)
-    await update.message.reply_text(
-        f""""Based on your max set and age, US army thinks that {army_rating}.
-According to general population statistics your shape is {civil_rating}"""
+    await update.message.reply_html(
+        f""""💪 Based on your <b>max set</b> and <b>age</b>,
+the <b>US Army</b> rates your performance as: <b>{army_rating}</b> 🪖.
+📊 Compared to the <b>general population</b>, your fitness level is: <b>{civil_rating}</b> 🏃‍♂️."""
     )
