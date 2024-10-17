@@ -18,7 +18,7 @@ async def get_practice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     user_id = update.effective_user.id
     workout_plan = get_workout(user_id=user_id)
 
-    if "rest" in workout_plan.lower():
+    if "rest</i>" in workout_plan.lower():
         await update.message.reply_html(f"<b>Today's Practice</b>:\n{workout_plan}")
     else:
         messages = [
