@@ -39,7 +39,6 @@ Documentation files:
 Infrastructure and deployment-related files:
 - `start_bot.sh`: Script to start the bot
 - `github_syncer.sh`: Script to sync code from GitHub
-- `backup_to_s3.sh`: Script to backup the database to S3
 - Various systemd service and timer files for automating processes
 
 ### model/
