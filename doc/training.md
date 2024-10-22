@@ -10,8 +10,8 @@
 
 ### Workout-Recover cycle
 
-7 days cycle: 3 days workout, 4 days rest (w - r - w - r - w - r - r)
-Aim for the Supercompensation effect, try to reach your limit during 3rd workout day
+* 7 days cycle: 3 days workout, 4 days rest (w - r - w - r - w - r - r)
+* Aim for the Supercompensation effect, try to reach your limit during 3rd workout day
 
 ### Warm-Up Strategy
 
